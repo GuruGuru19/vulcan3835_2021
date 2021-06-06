@@ -14,4 +14,10 @@ package frc.team3835.robot;
  * It is advised to statically import this class (or one of its inner classes) wherever the
  * constants are needed, to reduce verbosity.
  */
-public final class Constants {}
+public final class Constants {
+    //CAN address
+    public static final int driveSubLeftFront= 0;//drive base subsystem
+    public static final int driveSubLeftBack= 0;
+    public static final int driveSubRightFront= 0;
+    public static final int driveSubRightBack= 0;
+}
