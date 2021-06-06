@@ -3,9 +3,10 @@ package frc.team3835.robot.subsystems;
 
 import com.revrobotics.CANDigitalInput;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.PWMVictorSPX;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
+import com.ctre.phoenix.motorcontrol.can.VictorSPX;
+import com.ctre.phoenix.motorcontrol.ControlMode;
 
 public class IntakeSubsystem implements Subsystem {
 
@@ -16,15 +17,20 @@ public class IntakeSubsystem implements Subsystem {
         return INSTANCE;
     }
 
-    private PWMVictorSPX angleMotor;
-    private PWMVictorSPX powerMotor;
+    private boolean UP;
+
+    private VictorSPX angleMotor;
+    private VictorSPX powerMotor;
 
     private DigitalInput limitSwitchDown;
     private DigitalInput limitSwitchUp;
 
+    private static final double POWERUP = 0.7;
+    private static final double POWERDOWN = 0.4;
+
     private IntakeSubsystem() {
-        angleMotor = new PWMVictorSPX(Constants.intakeAngleMotor);
-        powerMotor = new PWMVictorSPX(Constants.intakePowerMotor);
+        angleMotor = new VictorSPX(Constants.intakeAngleMotor);
+        powerMotor = new VictorSPX(Constants.intakePowerMotor);
 
         limitSwitchDown = new DigitalInput(Constants.intakeLimitSwitchDown);
         limitSwitchUp = new DigitalInput(Constants.intakeLimitSwitchUp);
@@ -32,18 +38,31 @@ public class IntakeSubsystem implements Subsystem {
         //       in the constructor or in the robot coordination class, such as RobotContainer.
     }
 
-
-    public void setAngleMotor(double power){
-        if (limitSwitchDown.get() && power>0) {
-            angleMotor.set(power*0.7);//בעלייה בכוח יותר גדול
-        }
-        else if (limitSwitchUp.get() && power<0){
-            angleMotor.set(power*0.4);//בירידה הכוח יותר קטן
-        }
+    public void setTarget(boolean up){
+        this.UP = up;
     }
 
-    public void setPowerMotor(){
-        powerMotor.set(1);
+    public boolean getTarget(){
+        return this.UP;
+    }
+
+    public void setPowerMotor(double power){
+        powerMotor.set(ControlMode.PercentOutput,power);
+    }
+
+
+    @Override
+    public void periodic() {
+
+        if (limitSwitchUp.get() && UP) {
+            angleMotor.set(ControlMode.PercentOutput, POWERUP);//בעלייה בכוח יותר גדול
+        }
+        else if (limitSwitchDown.get() && !UP){
+            angleMotor.set(ControlMode.PercentOutput, -POWERDOWN);//בירידה הכוח יותר קטן
+        }
+        else {
+            angleMotor.set(ControlMode.PercentOutput,0);
+        }
     }
 }
 

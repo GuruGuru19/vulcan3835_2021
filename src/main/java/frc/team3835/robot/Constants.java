@@ -21,4 +21,5 @@ public final class Constants {
 
     public static final int storageMotor = 0;//storage subsystem
     public static final int storageSensor = 0;
+    public static final int[] storageEncoder = {0,0};
 }
