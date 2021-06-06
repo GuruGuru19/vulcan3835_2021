@@ -22,4 +22,16 @@ public final class Constants {
     public static final int storageMotor = 0;//storage subsystem
     public static final int storageSensor = 0;
     public static final int[] storageEncoder = {0,0};
+
+    public static final int shooterAngleMotor = 0;//shooter subsystem
+    public static final int[] shooterAngleEncoder = {0,0};
+    public static final int shooterExitVelocityMotor = 0;
+
+    //shooter constants
+    public static final double SHOOTER_ANGLE_VELOCITY = 0.6;//prec
+    public static final double SHOOTER_ANGLE_DEAD_ZONE = 2;//deg
+
+    //intake constants
+    public static final double INTAKE_POWERUP = 0.7;
+    public static final double INTAKE_POWERDOWN = 0.4;
 }

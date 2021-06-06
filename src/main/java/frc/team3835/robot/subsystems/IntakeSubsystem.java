@@ -25,9 +25,6 @@ public class IntakeSubsystem implements Subsystem {
     private DigitalInput limitSwitchDown;
     private DigitalInput limitSwitchUp;
 
-    private static final double POWERUP = 0.7;
-    private static final double POWERDOWN = 0.4;
-
     private IntakeSubsystem() {
         angleMotor = new VictorSPX(Constants.intakeAngleMotor);
         powerMotor = new VictorSPX(Constants.intakePowerMotor);
@@ -55,10 +52,10 @@ public class IntakeSubsystem implements Subsystem {
     public void periodic() {
 
         if (limitSwitchUp.get() && UP) {
-            angleMotor.set(ControlMode.PercentOutput, POWERUP);//בעלייה בכוח יותר גדול
+            angleMotor.set(ControlMode.PercentOutput, Constants.INTAKE_POWERUP);//בעלייה בכוח יותר גדול
         }
         else if (limitSwitchDown.get() && !UP){
-            angleMotor.set(ControlMode.PercentOutput, -POWERDOWN);//בירידה הכוח יותר קטן
+            angleMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_POWERDOWN);//בירידה הכוח יותר קטן
         }
         else {
             angleMotor.set(ControlMode.PercentOutput,0);
