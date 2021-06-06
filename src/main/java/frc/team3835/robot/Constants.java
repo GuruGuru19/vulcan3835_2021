@@ -22,4 +22,24 @@ public final class Constants {
     public static final int storageMotor = 0;//storage subsystem
     public static final int storageSensor = 0;
     public static final int[] storageEncoder = {0,0};
+
+
+    //controllers
+    public static final int LeftJoystick = 1;
+    public static final int RightJoystick = 0;
+    public static final int Xbox = 2;
+    public static final int aButton = 1;
+    public static final int bButton = 2;
+    public static final int xButton = 3;
+    public static final int yButton = 4;
+    public static final int l1Button = 5;
+    public static final int l2Button = 0;
+    public static final int l3Button = 9;
+    public static final int r1Button = 6;
+    public static final int r2Button = 0;
+    public static final int r3Button = 10;
+    public static final int rXButton = 0;
+    public static final int startButton = 8;
+    public static final int backButton = 7;
+    public static final int downButton = 0;
 }
