@@ -27,6 +27,8 @@ public final class Constants {
     public static final int shooterAngleMotor = 0;//shooter subsystem
     public static final int[] shooterAngleEncoder = {0,0};
     public static final int shooterExitVelocityMotor = 0;
+    public static final int shooterUpSwitch = 0;//DIO
+    public static final int shooterDownSwitch = 0;//DIO
 
     //controllers ports
     public static final int LeftJoystick = 1;
@@ -49,11 +51,18 @@ public final class Constants {
 
     //shooter constants
     public static final double SHOOTER_ANGLE_VELOCITY = 0.6;//prec
-    public static final double SHOOTER_ANGLE_DEAD_ZONE = 2;//deg
+    public static final double SHOOTER_ANGLE_DEAD_ZONE = 1;//deg
+    public static final double SHOOTER_VELOCITY_KP = 0;
+    public static final double SHOOTER_VELOCITY_KI = 0;
+    public static final double SHOOTER_VELOCITY_KD = 0;
+    public static final double SHOOTER_VELOCITY_WHEEL_DIAMETER = 4*0.0254;
+    public static final double SHOOTER_VELOCITY_WHEEL_REDUCTION = 1;
 
     //intake constants
     public static final double INTAKE_POWERUP = 0.7;
     public static final double INTAKE_POWERDOWN = 0.4;
+    public static final double INTAKE_LIMIT_WHEN_SHOOTER_ANGLE_IS_LOW = 25;//deg
+    public static final double INTAKE_POWER_TAKE = 0.8;//deg
 
 
     

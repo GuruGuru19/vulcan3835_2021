@@ -4,12 +4,12 @@ package frc.team3835.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.CANPIDController;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
 
@@ -32,11 +32,19 @@ public class ShooterSubsystem implements Subsystem {
     private double targetAngle;
     private double targetVelocity;
 
+    private PIDController velocityPID;
+
     private ShooterSubsystem() {
         angleMotor = new VictorSPX(Constants.shooterAngleMotor);
         exitVelocityMotor = new CANSparkMax(Constants.shooterExitVelocityMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         gyro = new AHRS(I2C.Port.kOnboard);//TODO: check port
+
+        standingSwitch = new DigitalInput(Constants.shooterUpSwitch);
+        downSwitch = new DigitalInput(Constants.shooterDownSwitch);
+
+        velocityPID = new PIDController(Constants.SHOOTER_VELOCITY_KP, Constants.SHOOTER_VELOCITY_KI, Constants.SHOOTER_VELOCITY_KD);
+        velocityPID.setSetpoint(0);
 
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
@@ -48,14 +56,33 @@ public class ShooterSubsystem implements Subsystem {
 
     public double getShooterAngle(){
         return 90-this.gyro.getAngle();
-    }
+    }//TODO: sheck axis
 
     public void setTargetAngle(double angle){
         this.targetAngle = angle;
     }
 
+    public double getTargetAngle(){
+        return this.targetAngle;
+    }
+
+    public void setAngleMotor(double power){
+        if (standingSwitch.get()){
+            angleMotor.set(ControlMode.PercentOutput, power);
+        }
+    }
+    public boolean getStandingSwitchIsPressed(){
+        return !standingSwitch.get();
+    }
+
     public void setVelocityTarget(double velocity){
         this.targetVelocity = velocity;
+        this.velocityPID.reset();
+        this.velocityPID.setSetpoint(velocity);
+    }
+
+    public double getExitVelocity(){
+        return exitVelocityMotor.getEncoder().getVelocity()*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION*Constants.SHOOTER_VELOCITY_WHEEL_DIAMETER/2;
     }
 
     @Override
@@ -73,6 +100,12 @@ public class ShooterSubsystem implements Subsystem {
             angleMotor.set(ControlMode.PercentOutput, 0);
         }
 
+        if (targetVelocity == 0){
+            exitVelocityMotor.set(0);
+        }
+        else{
+            exitVelocityMotor.set(velocityPID.calculate(getExitVelocity()));
+        }
         //TODO: setup pid system to control exit velocity
     }
 }

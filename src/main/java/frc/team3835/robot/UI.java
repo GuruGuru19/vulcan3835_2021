@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 
 public class UI {
 
+    private static UI instance = new UI();
+
     public static final double JOY_DEADZONE = 0.08;
 
     public final Joystick LEFT_JOY = new Joystick(Constants.LeftJoystick);
@@ -28,11 +30,15 @@ public class UI {
 
 
 
-    public UI(){
+
+
+    private UI(){
 
     }
 
-
+    public static UI getInstance(){
+        return instance;
+    }
 
     public double getRightXboxX(){
         double raw = xboxController.getX(Hand.kRight);
@@ -71,25 +77,29 @@ public class UI {
     }
 
 
-    public static boolean GetXboxA(){
+    public static boolean getXboxA(){
         return xboxController.getAButton();
     }
-    public static boolean GetXboxX(){
+    public static boolean getXboxX(){
         return xboxController.getXButton();
     }
-    public static boolean GetXboxY(){
+    public static boolean getXboxY(){
         return xboxController.getYButton();
     }
-    public static boolean GetXboxB(){
+    public static boolean getXboxB(){
         return xboxController.getBButton();
     }
-    public static double GetLeftJoystick(){
+    public static double getLeftJoystick(){
         return xboxController.getY(Hand.kLeft);
     }
-    public static double GetRightJoystick(){
+    public static double getRightJoystick(){
         return xboxController.getY(Hand.kRight);
     }
     public static boolean getBackButtonPressed(){
         return xboxController.getBackButtonPressed();
+    }
+
+    public boolean getL3(){
+        return l3Button.get();
     }
 }

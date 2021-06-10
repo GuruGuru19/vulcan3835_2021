@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.team3835.robot.commands.TakeBallsCommand;
 
 public class IntakeSubsystem implements Subsystem {
 
@@ -31,8 +32,8 @@ public class IntakeSubsystem implements Subsystem {
 
         limitSwitchDown = new DigitalInput(Constants.intakeLimitSwitchDown);
         limitSwitchUp = new DigitalInput(Constants.intakeLimitSwitchUp);
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
+
+        setDefaultCommand(new TakeBallsCommand());
     }
 
     public void setTarget(boolean up){
