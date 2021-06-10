@@ -102,4 +102,8 @@ public class UI {
     public boolean getL3(){
         return l3Button.get();
     }
+
+    public static XboxController getXboxController(){
+        return UI.getXboxController();
+    }
 }

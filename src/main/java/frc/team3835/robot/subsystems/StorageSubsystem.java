@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import frc.team3835.robot.commands.StorageMoveCommand;
 
 public class StorageSubsystem implements Subsystem {
 
@@ -25,15 +26,14 @@ public class StorageSubsystem implements Subsystem {
         storageMotor = new VictorSPX(Constants.storageMotor);
         storageSensor = new AnalogInput(Constants.storageSensor);
         storageEncoder = new Encoder(Constants.storageEncoder[0],Constants.storageEncoder[1]);
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
+        setDefaultCommand(new StorageMoveCommand());
     }
 
     public void setPower(double power){
         storageMotor.set(ControlMode.PercentOutput, power);
     }
 
-    //TODO: !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! (SENSOR)
+    //TODO: !!!!!!! setup sensor
     //public double getSensor(){
     //    return storageSensor.
     //}

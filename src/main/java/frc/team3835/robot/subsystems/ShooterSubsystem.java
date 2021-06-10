@@ -56,7 +56,7 @@ public class ShooterSubsystem implements Subsystem {
 
     public double getShooterAngle(){
         return 90-this.gyro.getAngle();
-    }//TODO: sheck axis
+    }//TODO: check axis
 
     public void setTargetAngle(double angle){
         this.targetAngle = angle;
