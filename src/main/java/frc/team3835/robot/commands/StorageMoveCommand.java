@@ -23,23 +23,29 @@ public class StorageMoveCommand implements Command {
 
     @Override
     public void execute() {
-        if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)){
-
+        if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)&&UI.getXboxController().getBumper(GenericHID.Hand.kLeft)){
+            storageSubsystem.setPower(0);
         }
-        //else if (){
-//
-        //}
+        else if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)){
+            storageSubsystem.setPower(1);
+        }
+        else if (UI.getXboxController().getBumper(GenericHID.Hand.kLeft)){
+            storageSubsystem.setPower(-1);
+        }
+        else {
+            storageSubsystem.setPower(0);
+        }
     }
 
     @Override
     public boolean isFinished() {
-        // TODO: Make this return true when this Command no longer needs to run execute()
+
         return false;
     }
 
     @Override
     public void end(boolean interrupted) {
-
+        storageSubsystem.setPower(0);
     }
 
     @Override

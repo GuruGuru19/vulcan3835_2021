@@ -28,20 +28,20 @@ public class TakeBallsCommand implements Command {
     public void execute() {
         if (UI.getXboxX()){
             intake.setTarget(false);
-            intake.setPowerMotor(Constants.INTAKE_POWER_TAKE);
+            intake.setOn(Constants.INTAKE_POWER_TAKE);
         }
         else if(UI.getInstance().getL3()){
             intake.setTarget(false);
-            intake.setPowerMotor(-Constants.INTAKE_POWER_TAKE);
+            intake.setOn(-Constants.INTAKE_POWER_TAKE);
         }
         else {
-            intake.setPowerMotor(0);
-            if (Constants.INTAKE_LIMIT_WHEN_SHOOTER_ANGLE_IS_LOW<shooter.getTargetAngle()&&Constants.INTAKE_LIMIT_WHEN_SHOOTER_ANGLE_IS_LOW<shooter.getShooterAngle()){
+            if (Constants.INTAKE_LIMIT_WHEN_SHOOTER_ANGLE_IS_LOW<shooter.getTargetAngle()){
                 intake.setTarget(true);
             }
             else {
                 intake.setTarget(false);
             }
+            intake.setOn(0);
         }
     }
 
@@ -53,7 +53,7 @@ public class TakeBallsCommand implements Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.setPowerMotor(0);
+        intake.setOn(0);
     }
 
     @Override

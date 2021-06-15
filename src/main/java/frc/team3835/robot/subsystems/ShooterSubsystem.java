@@ -21,18 +21,18 @@ public class ShooterSubsystem implements Subsystem {
         return INSTANCE;
     }
 
-    private VictorSPX angleMotor;
-    private CANSparkMax exitVelocityMotor;
+    private final VictorSPX angleMotor;
+    private final CANSparkMax exitVelocityMotor;
 
-    private AHRS gyro;
+    private final AHRS gyro;
 
-    private DigitalInput standingSwitch;
-    private DigitalInput downSwitch;
+    private final DigitalInput standingSwitch;
+    private final DigitalInput downSwitch;
 
     private double targetAngle;
     private double targetVelocity;
 
-    private PIDController velocityPID;
+    private final PIDController velocityPID;
 
     private ShooterSubsystem() {
         angleMotor = new VictorSPX(Constants.shooterAngleMotor);
@@ -106,7 +106,6 @@ public class ShooterSubsystem implements Subsystem {
         else{
             exitVelocityMotor.set(velocityPID.calculate(getExitVelocity()));
         }
-        //TODO: setup pid system to control exit velocity
     }
 }
 

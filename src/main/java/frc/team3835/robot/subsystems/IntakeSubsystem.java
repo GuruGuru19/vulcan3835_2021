@@ -18,7 +18,8 @@ public class IntakeSubsystem implements Subsystem {
         return INSTANCE;
     }
 
-    private boolean UP;
+    private boolean up;
+    private double on;
 
     private VictorSPX angleMotor;
     private VictorSPX powerMotor;
@@ -34,33 +35,37 @@ public class IntakeSubsystem implements Subsystem {
         limitSwitchUp = new DigitalInput(Constants.intakeLimitSwitchUp);
 
         setDefaultCommand(new TakeBallsCommand());
+
+        on = 0;
     }
 
     public void setTarget(boolean up){
-        this.UP = up;
+        this.up = up;
     }
 
     public boolean getTarget(){
-        return this.UP;
+        return this.up;
     }
 
-    public void setPowerMotor(double power){
-        powerMotor.set(ControlMode.PercentOutput,power);
+    public void setOn(double power){
+        on = power;
     }
 
 
     @Override
     public void periodic() {
 
-        if (limitSwitchUp.get() && UP) {
+        if (limitSwitchUp.get() && up) {
             angleMotor.set(ControlMode.PercentOutput, Constants.INTAKE_POWERUP);//בעלייה בכוח יותר גדול
         }
-        else if (limitSwitchDown.get() && !UP){
+        else if (limitSwitchDown.get() && !up){
             angleMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_POWERDOWN);//בירידה הכוח יותר קטן
         }
         else {
             angleMotor.set(ControlMode.PercentOutput,0);
         }
+
+        powerMotor.set(ControlMode.PercentOutput, on);
     }
 }
 
