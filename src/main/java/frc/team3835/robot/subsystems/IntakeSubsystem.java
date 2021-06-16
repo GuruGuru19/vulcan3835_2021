@@ -36,6 +36,7 @@ public class IntakeSubsystem implements Subsystem {
 
         setDefaultCommand(new TakeBallsCommand());
 
+        up = true;
         on = 0;
     }
 

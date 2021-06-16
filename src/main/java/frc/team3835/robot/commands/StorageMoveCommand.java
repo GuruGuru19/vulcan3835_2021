@@ -3,6 +3,7 @@ package frc.team3835.robot.commands;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.team3835.robot.Constants;
 import frc.team3835.robot.UI;
 import frc.team3835.robot.subsystems.StorageSubsystem;
 
@@ -27,10 +28,10 @@ public class StorageMoveCommand implements Command {
             storageSubsystem.setPower(0);
         }
         else if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)){
-            storageSubsystem.setPower(1);
+            storageSubsystem.setPower(Constants.STORAGE_POWER);
         }
         else if (UI.getXboxController().getBumper(GenericHID.Hand.kLeft)){
-            storageSubsystem.setPower(-1);
+            storageSubsystem.setPower(-Constants.STORAGE_POWER);
         }
         else {
             storageSubsystem.setPower(0);

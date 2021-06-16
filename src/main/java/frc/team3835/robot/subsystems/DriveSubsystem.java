@@ -6,6 +6,8 @@ import com.revrobotics.CANEncoder;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.I2C;
+import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
 
@@ -35,7 +37,8 @@ public class DriveSubsystem implements Subsystem {
         this.rightFront = new CANSparkMax(Constants.driveSubRightFront, CANSparkMaxLowLevel.MotorType.kBrushless);
         this.rightBack = new CANSparkMax(Constants.driveSubRightBack, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        gyro = new AHRS(I2C.Port.kMXP);//TODO: check port
+        gyro = new AHRS(SPI.Port.kMXP);//TODO: check port
+
 
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.

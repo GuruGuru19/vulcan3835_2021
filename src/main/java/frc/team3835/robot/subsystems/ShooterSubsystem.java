@@ -43,9 +43,11 @@ public class ShooterSubsystem implements Subsystem {
         standingSwitch = new DigitalInput(Constants.shooterUpSwitch);
         downSwitch = new DigitalInput(Constants.shooterDownSwitch);
 
+        targetAngle = 0;
+        targetVelocity = 0;
+
         velocityPID = new PIDController(Constants.SHOOTER_VELOCITY_KP, Constants.SHOOTER_VELOCITY_KI, Constants.SHOOTER_VELOCITY_KD);
         velocityPID.setSetpoint(0);
-
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
     }
@@ -55,8 +57,8 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     public double getShooterAngle(){
-        return 90-this.gyro.getAngle();
-    }//TODO: check axis
+        return 90-this.gyro.getRoll();
+    }
 
     public void setTargetAngle(double angle){
         this.targetAngle = angle;
@@ -78,11 +80,11 @@ public class ShooterSubsystem implements Subsystem {
     public void setVelocityTarget(double velocity){
         this.targetVelocity = velocity;
         this.velocityPID.reset();
-        this.velocityPID.setSetpoint(velocity);
+        this.velocityPID.setSetpoint(velocity*Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION);//ממיר את המהירות הקווית למהירות זוויתית
     }
 
     public double getExitVelocity(){
-        return exitVelocityMotor.getEncoder().getVelocity()*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION*Constants.SHOOTER_VELOCITY_WHEEL_DIAMETER/2;
+        return exitVelocityMotor.getEncoder().getVelocity()*(1/Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION);
     }
 
     @Override
@@ -104,7 +106,7 @@ public class ShooterSubsystem implements Subsystem {
             exitVelocityMotor.set(0);
         }
         else{
-            exitVelocityMotor.set(velocityPID.calculate(getExitVelocity()));
+            exitVelocityMotor.set(-velocityPID.calculate(getExitVelocity()));
         }
     }
 }

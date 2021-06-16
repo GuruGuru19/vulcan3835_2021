@@ -6,29 +6,37 @@
 package frc.team3835.robot;
 
 public final class Constants {
-    //CAN address
-    public static final int driveSubLeftFront= 0;//drive base subsystem
-    public static final int driveSubLeftBack= 0;
-    public static final int driveSubRightFront= 0;
-    public static final int driveSubRightBack= 0;
+    //ports address
+    //drive base subsystem
+    public static final int driveSubLeftFront= 0;//CAN
+    public static final int driveSubLeftBack= 0;//CAN
+    public static final int driveSubRightFront= 0;//CAN
+    public static final int driveSubRightBack= 0;//CAN
 
-    public static final int climbMotor = 0;//climb base subsystem
+    //climb base subsystem
+    public static final int climbMotor = 0;//CAN
+    public static final int climbSwitch = 2;//DIO
 
-    public static final int intakeAngleMotor = 0;//intake subsystem
-    public static final int intakePowerMotor = 0;
-    public static final int intakeLimitSwitchDown = 0;
-    public static final int intakeLimitSwitchUp = 0;
+    //intake subsystem
+    public static final int intakeAngleMotor = 26;//CAN
+    public static final int intakePowerMotor = 31;//CAN
+    public static final int intakeLimitSwitchDown = 1;//DIO
+    public static final int intakeLimitSwitchUp = 3;//DIO
 
-    public static final int storageMotor = 0;//storage subsystem
-    public static final int storageSensor = 0;
-    public static final int[] storageEncoder = {0,0};
+    //storage subsystem
+    public static final int storageMotorUp = 24;//CAN
+    public static final int storageMotorDown = 30;//CAN
+    public static final int storageSensor = 0;//analog in 0 :)
 
 
-    public static final int shooterAngleMotor = 0;//shooter subsystem
+    //shooter subsystem
+    public static final int shooterAngleMotor = 0;//CAN
     public static final int[] shooterAngleEncoder = {0,0};
-    public static final int shooterExitVelocityMotor = 0;
+    public static final int shooterExitVelocityMotor = 40;//CAN
     public static final int shooterUpSwitch = 0;//DIO
-    public static final int shooterDownSwitch = 0;//DIO
+    public static final int shooterDownSwitch = 9;//DIO
+
+
 
     //controllers ports
     public static final int LeftJoystick = 1;
@@ -57,6 +65,8 @@ public final class Constants {
     public static final double SHOOTER_VELOCITY_KD = 0;
     public static final double SHOOTER_VELOCITY_WHEEL_DIAMETER = 4*0.0254;
     public static final double SHOOTER_VELOCITY_WHEEL_REDUCTION = 1;
+    public static final double SHOOTER_VELOCITY_CONVERTER_CONSTANT = 60/(2*Math.PI*(SHOOTER_VELOCITY_WHEEL_DIAMETER/2));// from liner velocity to rotational velocity
+    public static final double SHOOTER_VELOCITY_CONSTANT = 1;
 
     //intake constants
     public static final double INTAKE_POWERUP = 0.7;
@@ -64,7 +74,10 @@ public final class Constants {
     public static final double INTAKE_LIMIT_WHEN_SHOOTER_ANGLE_IS_LOW = 25;//deg
     public static final double INTAKE_POWER_TAKE = 0.8;//deg
 
+    //storage constants
+    public static final double STORAGE_SENSOR_BALL_UP_BOUND = 2.8;
+    public static final double STORAGE_SENSOR_BALL_DOWN_BOUND = 2.2;
+    public static final double STORAGE_POWER = 2.2;
 
-    
 
 }

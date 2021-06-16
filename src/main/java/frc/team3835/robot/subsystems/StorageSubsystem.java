@@ -16,26 +16,32 @@ public class StorageSubsystem implements Subsystem {
     @SuppressWarnings("WeakerAccess")
     public static StorageSubsystem getInstance() { return INSTANCE; }
 
-
-    private VictorSPX storageMotor;
+    private VictorSPX storageMotorUp;
+    private VictorSPX storageMotorDown;
 
     private AnalogInput storageSensor;
-    private Encoder storageEncoder;
 
     private StorageSubsystem() {
-        storageMotor = new VictorSPX(Constants.storageMotor);
+        storageMotorUp = new VictorSPX(Constants.storageMotorUp);
+        storageMotorDown = new VictorSPX(Constants.storageMotorDown);
+
         storageSensor = new AnalogInput(Constants.storageSensor);
-        storageEncoder = new Encoder(Constants.storageEncoder[0],Constants.storageEncoder[1]);
         setDefaultCommand(new StorageMoveCommand());
     }
 
     public void setPower(double power){
-        storageMotor.set(ControlMode.PercentOutput, power);
+        storageMotorUp.set(ControlMode.PercentOutput, power);
+        storageMotorDown.set(ControlMode.PercentOutput, power);
     }
 
-    //TODO: !!!!!!! setup sensor
-    //public double getSensor(){
-    //    return storageSensor.
-    //}
+    @Override
+    public void periodic() {
+        if (storageSensor.getVoltage() < 2.8 && storageSensor.getVoltage() > 2.2){
+            setPower(Constants.STORAGE_POWER);
+        }
+        else{
+            setPower(0);
+        }
+    }
 }
 
