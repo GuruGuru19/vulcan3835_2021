@@ -30,7 +30,6 @@ public class ShooterSubsystem implements Subsystem {
     private final DigitalInput downSwitch;
 
     private double targetAngle;
-    private double targetVelocity;
 
     private final PIDController velocityPID;
 
@@ -44,7 +43,6 @@ public class ShooterSubsystem implements Subsystem {
         downSwitch = new DigitalInput(Constants.shooterDownSwitch);
 
         targetAngle = 0;
-        targetVelocity = 0;
 
         velocityPID = new PIDController(Constants.SHOOTER_VELOCITY_KP, Constants.SHOOTER_VELOCITY_KI, Constants.SHOOTER_VELOCITY_KD);
         velocityPID.setSetpoint(0);
@@ -78,7 +76,7 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     public void setVelocityTarget(double velocity){
-        this.targetVelocity = velocity;
+
         this.velocityPID.reset();
         this.velocityPID.setSetpoint(velocity*Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION);//ממיר את המהירות הקווית למהירות זוויתית
     }
@@ -102,7 +100,7 @@ public class ShooterSubsystem implements Subsystem {
             angleMotor.set(ControlMode.PercentOutput, 0);
         }
 
-        if (targetVelocity == 0){
+        if (velocityPID.getSetpoint()==0){
             exitVelocityMotor.set(0);
         }
         else{
