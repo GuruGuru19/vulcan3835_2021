@@ -36,7 +36,7 @@ public class StorageSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        if (storageSensor.getVoltage() < 2.8 && storageSensor.getVoltage() > 2.2){
+        if (storageSensor.getVoltage() < Constants.STORAGE_SENSOR_BALL_UP_BOUND && storageSensor.getVoltage() > Constants.STORAGE_SENSOR_BALL_DOWN_BOUND){
             setPower(Constants.STORAGE_POWER);
         }
         else{

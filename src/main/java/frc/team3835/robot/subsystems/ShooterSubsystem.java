@@ -48,6 +48,7 @@ public class ShooterSubsystem implements Subsystem {
 
         velocityPID = new PIDController(Constants.SHOOTER_VELOCITY_KP, Constants.SHOOTER_VELOCITY_KI, Constants.SHOOTER_VELOCITY_KD);
         velocityPID.setSetpoint(0);
+        velocityPID.setTolerance(Constants.SHOOTER_VELOCITY_TOLERANCE);
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
     }
@@ -87,6 +88,14 @@ public class ShooterSubsystem implements Subsystem {
         return exitVelocityMotor.getEncoder().getVelocity()*(1/Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION);
     }
 
+    public boolean isOnVelocitySetpoint(){
+        return velocityPID.atSetpoint();
+    }
+
+    public boolean isOnAngleSetpoint(){
+        return Math.abs(targetAngle - getShooterAngle())<Constants.SHOOTER_ANGLE_DEAD_ZONE;
+    }
+
     @Override
     public void periodic() {
         if(Math.abs(targetAngle - getShooterAngle())<Constants.SHOOTER_ANGLE_DEAD_ZONE || !(targetAngle>0&&targetAngle<=90)){
@@ -102,11 +111,11 @@ public class ShooterSubsystem implements Subsystem {
             angleMotor.set(ControlMode.PercentOutput, 0);
         }
 
-        if (targetVelocity == 0){
+        if (targetVelocity == 0){//TODO: complete the velocity control system
             exitVelocityMotor.set(0);
         }
         else{
-            exitVelocityMotor.set(-velocityPID.calculate(getExitVelocity()));
+            exitVelocityMotor.set(-velocityPID.calculate(exitVelocityMotor.getEncoder().getVelocity()));
         }
     }
 }

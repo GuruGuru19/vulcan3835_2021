@@ -7,6 +7,7 @@ import com.revrobotics.CANSparkMaxLowLevel;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
+import frc.team3835.robot.commands.ClimbCommand;
 
 public class ClimbSubsystem implements Subsystem {
 
@@ -22,8 +23,7 @@ public class ClimbSubsystem implements Subsystem {
     private ClimbSubsystem() {
         this.climbMotor = new CANSparkMax(Constants.climbMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         downSwitch = new DigitalInput(Constants.climbSwitch);
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
+        setDefaultCommand(new ClimbCommand());
     }
 
     public CANEncoder getEncoder(){

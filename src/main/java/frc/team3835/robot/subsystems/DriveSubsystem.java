@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SerialPort;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
+import frc.team3835.robot.commands.DriveCommand;
 
 public class DriveSubsystem implements Subsystem {
     private final static DriveSubsystem INSTANCE = new DriveSubsystem();
@@ -39,9 +40,7 @@ public class DriveSubsystem implements Subsystem {
 
         gyro = new AHRS(SPI.Port.kMXP);//TODO: check port
 
-
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
+        setDefaultCommand(new DriveCommand(true));
     }
 
     public void power(double leftValue, double rightValue){

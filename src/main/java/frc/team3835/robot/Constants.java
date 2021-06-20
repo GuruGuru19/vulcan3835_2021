@@ -5,6 +5,8 @@
 
 package frc.team3835.robot;
 
+import edu.wpi.first.wpilibj.XboxController;
+
 public final class Constants {
     //ports address
     //drive base subsystem
@@ -31,7 +33,6 @@ public final class Constants {
 
     //shooter subsystem
     public static final int shooterAngleMotor = 0;//CAN
-    public static final int[] shooterAngleEncoder = {0,0};
     public static final int shooterExitVelocityMotor = 40;//CAN
     public static final int shooterUpSwitch = 0;//DIO
     public static final int shooterDownSwitch = 9;//DIO
@@ -39,23 +40,7 @@ public final class Constants {
 
 
     //controllers ports
-    public static final int LeftJoystick = 1;
-    public static final int RightJoystick = 0;
     public static final int Xbox = 2;
-    public static final int aButton = 1;
-    public static final int bButton = 2;
-    public static final int xButton = 3;
-    public static final int yButton = 4;
-    public static final int l1Button = 5;
-    public static final int l2Button = 0;
-    public static final int l3Button = 9;
-    public static final int r1Button = 6;
-    public static final int r2Button = 0;
-    public static final int r3Button = 10;
-    public static final int rXButton = 0;
-    public static final int startButton = 8;
-    public static final int backButton = 7;
-    public static final int downButton = 0;
 
     //shooter constants
     public static final double SHOOTER_ANGLE_VELOCITY = 0.6;//prec
@@ -63,10 +48,14 @@ public final class Constants {
     public static final double SHOOTER_VELOCITY_KP = 0;
     public static final double SHOOTER_VELOCITY_KI = 0;
     public static final double SHOOTER_VELOCITY_KD = 0;
+    public static final double SHOOTER_VELOCITY_TOLERANCE = 200;//rpm TODO: find Tolerance
     public static final double SHOOTER_VELOCITY_WHEEL_DIAMETER = 4*0.0254;
     public static final double SHOOTER_VELOCITY_WHEEL_REDUCTION = 1;
     public static final double SHOOTER_VELOCITY_CONVERTER_CONSTANT = 60/(2*Math.PI*(SHOOTER_VELOCITY_WHEEL_DIAMETER/2));// from liner velocity to rotational velocity
     public static final double SHOOTER_VELOCITY_CONSTANT = 1;
+    public static final double SHOOTER_TRIANGLE_SHOT_VELOCITY = 0;//m/s TODO: set up values
+    public static final double SHOOTER_TRIANGLE_SHOT_ANGLE = 0;//deg
+    public static final double SHOOTER_STORAGE_MOVING_TIME = 4;//sec
 
     //intake constants
     public static final double INTAKE_POWERUP = 0.7;
@@ -77,7 +66,7 @@ public final class Constants {
     //storage constants
     public static final double STORAGE_SENSOR_BALL_UP_BOUND = 2.8;
     public static final double STORAGE_SENSOR_BALL_DOWN_BOUND = 2.2;
-    public static final double STORAGE_POWER = 2.2;
+    public static final double STORAGE_POWER = 1;
 
 
 }
