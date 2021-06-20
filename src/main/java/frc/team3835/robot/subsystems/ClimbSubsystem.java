@@ -23,6 +23,7 @@ public class ClimbSubsystem implements Subsystem {
     private ClimbSubsystem() {
         this.climbMotor = new CANSparkMax(Constants.climbMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         downSwitch = new DigitalInput(Constants.climbSwitch);
+
         setDefaultCommand(new ClimbCommand());
     }
 
