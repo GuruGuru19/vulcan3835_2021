@@ -30,8 +30,7 @@ public class ShooterSubsystem implements Subsystem {
     private final DigitalInput downSwitch;
 
     private double targetAngle;
-
-    private final PIDController velocityPID;
+    private  double targetVelocity;
 
     private ShooterSubsystem() {
         angleMotor = new VictorSPX(Constants.shooterAngleMotor);
@@ -43,10 +42,7 @@ public class ShooterSubsystem implements Subsystem {
         downSwitch = new DigitalInput(Constants.shooterDownSwitch);
 
         targetAngle = 0;
-
-        velocityPID = new PIDController(Constants.SHOOTER_VELOCITY_KP, Constants.SHOOTER_VELOCITY_KI, Constants.SHOOTER_VELOCITY_KD);
-        velocityPID.setSetpoint(0);
-        velocityPID.setTolerance(Constants.SHOOTER_VELOCITY_TOLERANCE);
+        targetVelocity = 0;
         // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
         //       in the constructor or in the robot coordination class, such as RobotContainer.
     }
@@ -77,17 +73,15 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     public void setVelocityTarget(double velocity){
-
-        this.velocityPID.reset();
-        this.velocityPID.setSetpoint(velocity*Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION);//ממיר את המהירות הקווית למהירות זוויתית
+        this.targetVelocity = velocity*Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION;//ממיר את המהירות הקווית למהירות זוויתית
     }
 
     public double getExitVelocity(){
-        return exitVelocityMotor.getEncoder().getVelocity()*(1/Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION);
+        return exitVelocityMotor.getEncoder().getVelocity()*(1/(Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION));
     }
 
     public boolean isOnVelocitySetpoint(){
-        return velocityPID.atSetpoint();
+        return Math.abs(exitVelocityMotor.getEncoder().getVelocity()-targetVelocity) < Constants.SHOOTER_VELOCITY_TOLERANCE;
     }
 
     public boolean isOnAngleSetpoint(){
@@ -110,11 +104,11 @@ public class ShooterSubsystem implements Subsystem {
         }
 
 
-        if (velocityPID.getSetpoint()==0){
+        if (targetVelocity==0){
             exitVelocityMotor.set(0);
         }
         else{
-            exitVelocityMotor.set(-velocityPID.calculate(exitVelocityMotor.getEncoder().getVelocity()));
+            exitVelocityMotor.setVoltage((12/Constants.SHOOTER_VELOCITY_AT_12V)*targetVelocity);
         }
     }
 }

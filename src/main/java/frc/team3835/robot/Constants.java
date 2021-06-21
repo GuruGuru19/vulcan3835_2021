@@ -45,10 +45,8 @@ public final class Constants {
     //shooter constants
     public static final double SHOOTER_ANGLE_VELOCITY = 0.6;//prec
     public static final double SHOOTER_ANGLE_DEAD_ZONE = 1;//deg
-    public static final double SHOOTER_VELOCITY_KP = 0;
-    public static final double SHOOTER_VELOCITY_KI = 0;
-    public static final double SHOOTER_VELOCITY_KD = 0;
     public static final double SHOOTER_VELOCITY_TOLERANCE = 200;//rpm TODO: find Tolerance
+    public static final double SHOOTER_VELOCITY_AT_12V = 6000;//rpm TODO: find
     public static final double SHOOTER_VELOCITY_WHEEL_DIAMETER = 4*0.0254;
     public static final double SHOOTER_VELOCITY_WHEEL_REDUCTION = 1;
     public static final double SHOOTER_VELOCITY_CONVERTER_CONSTANT = 60/(2*Math.PI*(SHOOTER_VELOCITY_WHEEL_DIAMETER/2));// from liner velocity to rotational velocity
@@ -68,5 +66,9 @@ public final class Constants {
     public static final double STORAGE_SENSOR_BALL_DOWN_BOUND = 2.2;
     public static final double STORAGE_POWER = 1;
 
-
+    //robot dimensions
+    public static final double SHOOTER_LENGTH = 0.45; //m TODO: find
+    public static final double SHOOTER_HIGHT = 0.2; //m TODO: find
+    public static final double CAMERA_HIGHT = 0.4;//m TODO: find
+    public static final double CAMERA_ANGLE = 30;//deg TODO: find
 }
