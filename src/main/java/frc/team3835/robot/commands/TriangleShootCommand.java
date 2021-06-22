@@ -1,6 +1,7 @@
 package frc.team3835.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.team3835.lib.logger.LoggerAdapter;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.UI;
 import frc.team3835.robot.subsystems.DriveSubsystem;
@@ -20,6 +21,7 @@ public class TriangleShootCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        LoggerAdapter.log(this.getClass().getName()+" initialized");
         shooterSubsystem.setTargetAngle(Constants.SHOOTER_TRIANGLE_SHOT_ANGLE);
         shooterSubsystem.setVelocityTarget(Constants.SHOOTER_TRIANGLE_SHOT_VELOCITY);
         this.driveSubsystem.power(0,0);
@@ -43,6 +45,12 @@ public class TriangleShootCommand extends CommandBase {
 
     @Override
     public void end(boolean interrupted) {
+        if (interrupted){
+            LoggerAdapter.log(this.getClass().getName()+" ended, by running out of time");
+        }
+        else {
+            LoggerAdapter.log(this.getClass().getName()+" ended, by pressing the back button");
+        }
         storageSubsystem.setPower(0);
         shooterSubsystem.setVelocityTarget(0);
     }

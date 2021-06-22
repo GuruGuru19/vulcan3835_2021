@@ -8,6 +8,8 @@ package frc.team3835.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.team3835.lib.logger.Logger;
+import frc.team3835.lib.logger.LoggerAdapter;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -18,6 +20,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
  */
 public class Robot extends TimedRobot
 {
+    private boolean loggerInitialized;
     private Command autonomousCommand;
 
     /**
@@ -27,6 +30,8 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
+
+        loggerInitialized = false;
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
 
@@ -51,7 +56,11 @@ public class Robot extends TimedRobot
 
     /** This method is called once each time the robot enters Disabled mode. */
     @Override
-    public void disabledInit() {}
+    public void disabledInit() {
+        LoggerAdapter.log("robot disabled");
+        LoggerAdapter.saveLog();
+        loggerInitialized = false;
+    }
 
     @Override
     public void disabledPeriodic() {}
@@ -59,7 +68,11 @@ public class Robot extends TimedRobot
     @Override
     public void autonomousInit()
     {
-        autonomousCommand = null;//
+        if (!loggerInitialized && Constants.enableLogger){
+            LoggerAdapter.loggerInit(Constants.loggerPath);
+        }
+        LoggerAdapter.log("robot at autonomous time");
+        autonomousCommand = null;//TODO: set up
 
         // schedule the autonomous command (example)
         if (autonomousCommand != null)
@@ -75,7 +88,10 @@ public class Robot extends TimedRobot
     @Override
     public void teleopInit()
     {
-
+        if (!loggerInitialized && Constants.enableLogger){
+            LoggerAdapter.loggerInit(Constants.loggerPath);
+        }
+        LoggerAdapter.log("robot at teleop time");
         // This makes sure that the autonomous stops running when
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
@@ -93,6 +109,9 @@ public class Robot extends TimedRobot
     @Override
     public void testInit()
     {
+        if (!loggerInitialized){
+            LoggerAdapter.loggerInit(Constants.loggerPath);
+        }
         // Cancels all running commands at the start of test mode.
         CommandScheduler.getInstance().cancelAll();
     }

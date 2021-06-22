@@ -44,6 +44,10 @@ public class CameraSubsystem implements Subsystem {
         return tv.getDouble(0);
     }
 
+    public double getTxFromMid(){
+        return 0;//TODO:setup
+    }
+
     public Number getPipeline(){
         return table.getEntry("getpipe").getNumber(0);
     }

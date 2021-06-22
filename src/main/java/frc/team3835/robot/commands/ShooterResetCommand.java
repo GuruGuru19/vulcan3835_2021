@@ -2,6 +2,7 @@ package frc.team3835.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Subsystem;
+import frc.team3835.lib.logger.LoggerAdapter;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.subsystems.ShooterSubsystem;
 
@@ -31,6 +32,7 @@ public class ShooterResetCommand implements Command {
         if (shooter.getStandingSwitchIsPressed()){
             shooter.setAngleMotor(0);
             shooter.getGyro().reset();
+            LoggerAdapter.log("shooter reset done");
             return true;
         }
         return false;

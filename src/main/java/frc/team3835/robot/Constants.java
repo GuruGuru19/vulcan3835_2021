@@ -7,7 +7,13 @@ package frc.team3835.robot;
 
 import edu.wpi.first.wpilibj.XboxController;
 
+import java.io.File;
+
 public final class Constants {
+
+    public static final File loggerPath = new File("");//TODO: find
+    public static final boolean enableLogger = false;
+
     //ports address
     //drive base subsystem
     public static final int driveSubLeftFront= 0;//CAN
@@ -62,9 +68,16 @@ public final class Constants {
     public static final double INTAKE_POWER_TAKE = 0.8;//deg
 
     //storage constants
-    public static final double STORAGE_SENSOR_BALL_UP_BOUND = 2.8;
-    public static final double STORAGE_SENSOR_BALL_DOWN_BOUND = 2.2;
+    public static final double STORAGE_SENSOR_BALL_UP_BOUND = 2.8;//Volts
+    public static final double STORAGE_SENSOR_BALL_DOWN_BOUND = 2.2;//Volts
     public static final double STORAGE_POWER = 1;
+
+    //drive constants
+    public static final double DRIVE_TURN_PID_KP = 0.05;//TODO: set up
+    public static final double DRIVE_TURN_PID_KI = 0;
+    public static final double DRIVE_TURN_PID_KD = 0;
+    public static final double DRIVE_TURN_PID_P_TOLERANCE = 1;//deg
+    public static final double DRIVE_TURN_PID_V_TOLERANCE = 0;//deg/s
 
     //robot dimensions
     public static final double SHOOTER_LENGTH = 0.45; //m TODO: find
