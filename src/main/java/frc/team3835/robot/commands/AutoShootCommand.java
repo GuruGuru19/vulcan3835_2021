@@ -13,15 +13,18 @@ import frc.team3835.robot.subsystems.StorageSubsystem;
 
 
 public class AutoShootCommand extends CommandBase {
-    private final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    private final StorageSubsystem storageSubsystem = StorageSubsystem.getInstance();
-    private final DriveSubsystem driveSubsystem = DriveSubsystem.getInstance();
+    private final ShooterSubsystem shooterSubsystem;
+    private final StorageSubsystem storageSubsystem;
+    private final DriveSubsystem driveSubsystem;
     private final CameraSubsystem cameraSubsystem = CameraSubsystem.getInstance();
 
     PIDController xAxisController;
 
-    public AutoShootCommand() {
-        addRequirements(this.shooterSubsystem, this.storageSubsystem, this.driveSubsystem);
+    public AutoShootCommand(ShooterSubsystem shooterSubsystem, StorageSubsystem storageSubsystem, DriveSubsystem driveSubsystem) {
+        addRequirements(shooterSubsystem, storageSubsystem, driveSubsystem);
+        this.shooterSubsystem = shooterSubsystem;
+        this.storageSubsystem = storageSubsystem;
+        this.driveSubsystem =driveSubsystem;
         xAxisController = new PIDController(Constants.DRIVE_TURN_PID_KP, Constants.DRIVE_TURN_PID_KI, Constants.DRIVE_TURN_PID_KD);
         xAxisController.setTolerance(Constants.DRIVE_TURN_PID_P_TOLERANCE, Constants.DRIVE_TURN_PID_V_TOLERANCE);
         xAxisController.setSetpoint(0);

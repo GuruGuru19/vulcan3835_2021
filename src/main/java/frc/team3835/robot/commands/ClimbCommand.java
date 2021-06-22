@@ -6,11 +6,12 @@ import frc.team3835.robot.subsystems.ClimbSubsystem;
 
 
 public class ClimbCommand extends CommandBase {
-    private final ClimbSubsystem climbSubsystem = ClimbSubsystem.getInstance();
+    private final ClimbSubsystem climbSubsystem;
 
-    public ClimbCommand() {
+    public ClimbCommand(ClimbSubsystem climbSubsystem) {
         // each subsystem used by the command must be passed into the addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(this.climbSubsystem);
+        addRequirements(climbSubsystem);
+        this.climbSubsystem=climbSubsystem;
     }
 
     @Override
@@ -20,6 +21,7 @@ public class ClimbCommand extends CommandBase {
 
     @Override
     public void execute() {
+
         if (UI.getXboxController().getPOV(0)==0){
             climbSubsystem.setPower(1);
         }

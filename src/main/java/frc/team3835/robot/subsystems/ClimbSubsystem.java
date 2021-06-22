@@ -24,7 +24,7 @@ public class ClimbSubsystem implements Subsystem {
         this.climbMotor = new CANSparkMax(Constants.climbMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
         downSwitch = new DigitalInput(Constants.climbSwitch);
 
-        setDefaultCommand(new ClimbCommand());
+        setDefaultCommand(new ClimbCommand(this));
     }
 
     public CANEncoder getEncoder(){
@@ -36,13 +36,17 @@ public class ClimbSubsystem implements Subsystem {
     }
 
     public void setPower(double power){
+
         if (power<0 && downSwitch.get()){
             climbMotor.set(power);
         }
         else if (power>0){
             climbMotor.set(power);
         }
-        climbMotor.set(0);
+        else {
+            climbMotor.set(0);
+        }
+
     }
 }
 

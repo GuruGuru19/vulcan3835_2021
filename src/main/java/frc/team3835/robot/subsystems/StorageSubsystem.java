@@ -26,22 +26,27 @@ public class StorageSubsystem implements Subsystem {
         storageMotorDown = new VictorSPX(Constants.storageMotorDown);
 
         storageSensor = new AnalogInput(Constants.storageSensor);
-        setDefaultCommand(new StorageMoveCommand());
+        setDefaultCommand(new StorageMoveCommand(this));
     }
 
     public void setPower(double power){
         storageMotorUp.set(ControlMode.PercentOutput, power);
-        storageMotorDown.set(ControlMode.PercentOutput, power);
+        storageMotorDown.set(ControlMode.PercentOutput, -power);
+    }
+
+    public double getVoltage(){
+        return storageSensor.getVoltage();
     }
 
     @Override
     public void periodic() {
-        if (storageSensor.getVoltage() < Constants.STORAGE_SENSOR_BALL_UP_BOUND && storageSensor.getVoltage() > Constants.STORAGE_SENSOR_BALL_DOWN_BOUND){
-            setPower(Constants.STORAGE_POWER);
-        }
-        else{
-            setPower(0);
-        }
+        //System.out.println("storage: "+storageSensor.getVoltage());
+//        if (storageSensor.getVoltage() < Constants.STORAGE_SENSOR_BALL_UP_BOUND && storageSensor.getVoltage() > Constants.STORAGE_SENSOR_BALL_DOWN_BOUND){
+//            setPower(Constants.STORAGE_POWER);
+//        }
+//        else{
+//            setPower(0);
+//        }
     }
 }
 

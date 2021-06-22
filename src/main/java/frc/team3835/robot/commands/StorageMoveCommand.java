@@ -10,11 +10,12 @@ import frc.team3835.robot.subsystems.StorageSubsystem;
 import java.util.Set;
 
 public class StorageMoveCommand implements Command {
-    private final StorageSubsystem storageSubsystem = StorageSubsystem.getInstance();
+    private final StorageSubsystem storageSubsystem;
     private final Set<Subsystem> subsystems;
 
-    public StorageMoveCommand() {
-        this.subsystems = Set.of(this.storageSubsystem);
+    public StorageMoveCommand(StorageSubsystem storageSubsystem) {
+        this.subsystems = Set.of(storageSubsystem);
+        this.storageSubsystem=storageSubsystem;
     }
 
     @Override
@@ -27,11 +28,14 @@ public class StorageMoveCommand implements Command {
         if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)&&UI.getXboxController().getBumper(GenericHID.Hand.kLeft)){
             storageSubsystem.setPower(0);
         }
-        else if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)){
-            storageSubsystem.setPower(Constants.STORAGE_POWER);
-        }
         else if (UI.getXboxController().getBumper(GenericHID.Hand.kLeft)){
             storageSubsystem.setPower(-Constants.STORAGE_POWER);
+        }
+        else if (storageSubsystem.getVoltage() < Constants.STORAGE_SENSOR_BALL_UP_BOUND && storageSubsystem.getVoltage() > Constants.STORAGE_SENSOR_BALL_DOWN_BOUND){
+            storageSubsystem.setPower(Constants.STORAGE_POWER*0.8);
+        }
+        else if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)){
+            storageSubsystem.setPower(Constants.STORAGE_POWER);
         }
         else {
             storageSubsystem.setPower(0);

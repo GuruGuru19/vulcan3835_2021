@@ -34,7 +34,7 @@ public class IntakeSubsystem implements Subsystem {
         limitSwitchDown = new DigitalInput(Constants.intakeLimitSwitchDown);
         limitSwitchUp = new DigitalInput(Constants.intakeLimitSwitchUp);
 
-        setDefaultCommand(new TakeBallsCommand());
+        setDefaultCommand(new TakeBallsCommand(this, ShooterSubsystem.getInstance()));
 
         up = true;
         on = 0;
@@ -55,12 +55,11 @@ public class IntakeSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-
         if (limitSwitchUp.get() && up) {
-            angleMotor.set(ControlMode.PercentOutput, Constants.INTAKE_POWERUP);//בעלייה בכוח יותר גדול
+            angleMotor.set(ControlMode.PercentOutput, Constants.INTAKE_POWERUP);//
         }
         else if (limitSwitchDown.get() && !up){
-            angleMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_POWERDOWN);//בירידה הכוח יותר קטן
+            angleMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_POWERDOWN);//
         }
         else {
             angleMotor.set(ControlMode.PercentOutput,0);

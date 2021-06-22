@@ -10,6 +10,8 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.team3835.lib.logger.Logger;
 import frc.team3835.lib.logger.LoggerAdapter;
+import frc.team3835.robot.commands.ShooterResetCommand;
+import frc.team3835.robot.subsystems.*;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -23,6 +25,14 @@ public class Robot extends TimedRobot
     private boolean loggerInitialized;
     private Command autonomousCommand;
 
+    private UI ui;
+    private CameraSubsystem cameraSubsystem;
+    private ClimbSubsystem climbSubsystem;
+    private DriveSubsystem driveSubsystem;
+    private IntakeSubsystem intakeSubsystem;
+    private ShooterSubsystem shooterSubsystem;
+    private StorageSubsystem storageSubsystem;
+
     /**
      * This method is run when the robot is first started up and should be used for any
      * initialization code.
@@ -30,7 +40,15 @@ public class Robot extends TimedRobot
     @Override
     public void robotInit()
     {
+        autonomousCommand = null;
 
+        cameraSubsystem = CameraSubsystem.getInstance();
+        shooterSubsystem = ShooterSubsystem.getInstance();
+        climbSubsystem = ClimbSubsystem.getInstance();
+        driveSubsystem = DriveSubsystem.getInstance();
+        intakeSubsystem = IntakeSubsystem.getInstance();
+        storageSubsystem = StorageSubsystem.getInstance();
+        ui = new UI(shooterSubsystem,storageSubsystem,driveSubsystem,intakeSubsystem);
         loggerInitialized = false;
         // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         // autonomous chooser on the dashboard.
@@ -52,6 +70,7 @@ public class Robot extends TimedRobot
         // and running subsystem periodic() methods.  This must be called from the robot's periodic
         // block in order for anything in the Command-based framework to work.
         CommandScheduler.getInstance().run();
+        ShooterSubsystem.getInstance().periodic();
     }
 
     /** This method is called once each time the robot enters Disabled mode. */
@@ -99,6 +118,9 @@ public class Robot extends TimedRobot
         if (autonomousCommand != null)
         {
             autonomousCommand.cancel();
+        }
+        else{
+            new ShooterResetCommand().schedule();
         }
     }
 

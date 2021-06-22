@@ -12,6 +12,8 @@ import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
+import frc.team3835.robot.MathAssistant;
+import frc.team3835.robot.commands.ShooterMoveCommand;
 
 public class ShooterSubsystem implements Subsystem {
 
@@ -32,6 +34,8 @@ public class ShooterSubsystem implements Subsystem {
     private double targetAngle;
     private  double targetVelocity;
 
+    private boolean inUse;
+
     private ShooterSubsystem() {
         angleMotor = new VictorSPX(Constants.shooterAngleMotor);
         exitVelocityMotor = new CANSparkMax(Constants.shooterExitVelocityMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
@@ -41,10 +45,18 @@ public class ShooterSubsystem implements Subsystem {
         standingSwitch = new DigitalInput(Constants.shooterUpSwitch);
         downSwitch = new DigitalInput(Constants.shooterDownSwitch);
 
-        targetAngle = 0;
+        targetAngle = 90;
         targetVelocity = 0;
-        // TODO: Set the default command, if any, for this subsystem by calling setDefaultCommand(command)
-        //       in the constructor or in the robot coordination class, such as RobotContainer.
+        inUse=false;
+        setDefaultCommand(new ShooterMoveCommand(this));
+    }
+
+    public boolean getInUse(){
+        return inUse;
+    }
+
+    public void setInUse(boolean inUse){
+        this.inUse=inUse;
     }
 
     public AHRS getGyro(){
@@ -56,6 +68,14 @@ public class ShooterSubsystem implements Subsystem {
     }
 
     public void setTargetAngle(double angle){
+        if (angle>90){
+            this.targetAngle = 90;
+            return;
+        }
+        if (angle<0){
+            this.targetAngle = 0;
+            return;
+        }
         this.targetAngle = angle;
     }
 
@@ -71,9 +91,12 @@ public class ShooterSubsystem implements Subsystem {
     public boolean getStandingSwitchIsPressed(){
         return !standingSwitch.get();
     }
+    public boolean getDownSwitchIsPressed(){
+        return !downSwitch.get();
+    }
 
     public void setVelocityTarget(double velocity){
-        this.targetVelocity = velocity*Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION;//ממיר את המהירות הקווית למהירות זוויתית
+        this.targetVelocity = velocity*Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION;
     }
 
     public double getExitVelocity(){
@@ -90,14 +113,19 @@ public class ShooterSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        if(Math.abs(targetAngle - getShooterAngle())<Constants.SHOOTER_ANGLE_DEAD_ZONE || !(targetAngle>0&&targetAngle<=90)){
+        if(inUse){
+            return;
+        }
+        System.out.println("target angle: "+targetAngle+", angle: "+getShooterAngle());
+        //System.out.println("angle target: "+targetAngle+", angle: "+getShooterAngle()+", gyro: "+gyro.getRoll()+", ss: "+standingSwitch.get()+", ds: "+downSwitch.get());
+        if(Math.abs(targetAngle - getShooterAngle())<Constants.SHOOTER_ANGLE_DEAD_ZONE || !(targetAngle>=0&&targetAngle<=90)){
             angleMotor.set(ControlMode.PercentOutput, 0);
         }
         else if(downSwitch.get() && targetAngle<getShooterAngle()){
-            angleMotor.set(ControlMode.PercentOutput, -Constants.SHOOTER_ANGLE_VELOCITY);
+            angleMotor.set(ControlMode.PercentOutput, (0.65+0.3* (Math.abs(targetAngle-getShooterAngle()))));
         }
         else if(standingSwitch.get()&&targetAngle>getShooterAngle()){
-            angleMotor.set(ControlMode.PercentOutput, Constants.SHOOTER_ANGLE_VELOCITY);
+            angleMotor.set(ControlMode.PercentOutput, -(0.65+0.3* (Math.abs(targetAngle-getShooterAngle()))));
         }
         else{
             angleMotor.set(ControlMode.PercentOutput, 0);
@@ -108,7 +136,7 @@ public class ShooterSubsystem implements Subsystem {
             exitVelocityMotor.set(0);
         }
         else{
-            exitVelocityMotor.setVoltage((12/Constants.SHOOTER_VELOCITY_AT_12V)*targetVelocity);
+            exitVelocityMotor.setVoltage(-(12/Constants.SHOOTER_VELOCITY_AT_12V)*targetVelocity);
         }
     }
 }

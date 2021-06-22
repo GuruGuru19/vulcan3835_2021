@@ -12,11 +12,13 @@ import frc.team3835.robot.subsystems.ShooterSubsystem;
 import java.util.Set;
 
 public class TakeBallsCommand extends CommandBase {
-    private final IntakeSubsystem intake = IntakeSubsystem.getInstance();
-    private final ShooterSubsystem shooter = ShooterSubsystem.getInstance();
+    private final IntakeSubsystem intake;
+    private final ShooterSubsystem shooter;
 
-    public TakeBallsCommand() {
+    public TakeBallsCommand(IntakeSubsystem intake, ShooterSubsystem shooter) {
         addRequirements(intake);
+        this.intake = intake;
+        this.shooter = shooter;
     }
 
     @Override

@@ -16,13 +16,13 @@ public final class Constants {
 
     //ports address
     //drive base subsystem
-    public static final int driveSubLeftFront= 0;//CAN
-    public static final int driveSubLeftBack= 0;//CAN
-    public static final int driveSubRightFront= 0;//CAN
-    public static final int driveSubRightBack= 0;//CAN
+    public static final int driveSubLeftFront= 12;//CAN
+    public static final int driveSubLeftBack= 13;//CAN
+    public static final int driveSubRightFront= 14;//CAN
+    public static final int driveSubRightBack= 15;//CAN
 
     //climb base subsystem
-    public static final int climbMotor = 0;//CAN
+    public static final int climbMotor = 20;//CAN
     public static final int climbSwitch = 2;//DIO
 
     //intake subsystem
@@ -38,7 +38,7 @@ public final class Constants {
 
 
     //shooter subsystem
-    public static final int shooterAngleMotor = 0;//CAN
+    public static final int shooterAngleMotor = 25;//CAN
     public static final int shooterExitVelocityMotor = 40;//CAN
     public static final int shooterUpSwitch = 0;//DIO
     public static final int shooterDownSwitch = 9;//DIO
@@ -46,10 +46,10 @@ public final class Constants {
 
 
     //controllers ports
-    public static final int Xbox = 2;
+    public static final int Xbox = 0;
 
     //shooter constants
-    public static final double SHOOTER_ANGLE_VELOCITY = 0.6;//prec
+    public static final double SHOOTER_ANGLE_VELOCITY = 0.85;//prec
     public static final double SHOOTER_ANGLE_DEAD_ZONE = 1;//deg
     public static final double SHOOTER_VELOCITY_TOLERANCE = 200;//rpm TODO: find Tolerance
     public static final double SHOOTER_VELOCITY_AT_12V = 6000;//rpm TODO: find
@@ -62,15 +62,15 @@ public final class Constants {
     public static final double SHOOTER_STORAGE_MOVING_TIME = 4;//sec
 
     //intake constants
-    public static final double INTAKE_POWERUP = 0.7;
+    public static final double INTAKE_POWERUP = 0.9;
     public static final double INTAKE_POWERDOWN = 0.4;
     public static final double INTAKE_LIMIT_WHEN_SHOOTER_ANGLE_IS_LOW = 25;//deg
     public static final double INTAKE_POWER_TAKE = 0.8;//deg
 
     //storage constants
-    public static final double STORAGE_SENSOR_BALL_UP_BOUND = 2.8;//Volts
-    public static final double STORAGE_SENSOR_BALL_DOWN_BOUND = 2.2;//Volts
-    public static final double STORAGE_POWER = 1;
+    public static final double STORAGE_SENSOR_BALL_UP_BOUND = 3;//Volts
+    public static final double STORAGE_SENSOR_BALL_DOWN_BOUND = 2;//Volts
+    public static final double STORAGE_POWER = 0.7;
 
     //drive constants
     public static final double DRIVE_TURN_PID_KP = 0.05;//TODO: set up

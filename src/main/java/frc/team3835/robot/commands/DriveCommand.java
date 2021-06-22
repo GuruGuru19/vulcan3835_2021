@@ -9,16 +9,17 @@ import frc.team3835.robot.subsystems.DriveSubsystem;
 
 
 public class DriveCommand extends CommandBase {
-    private final DriveSubsystem driveSubsystem = DriveSubsystem.getInstance();
+    private final DriveSubsystem driveSubsystem;
 
     private boolean hapticFeedback;
 
     private double p;
     private double r;
 
-    public DriveCommand(boolean hapticFeedback) {
+    public DriveCommand(boolean hapticFeedback, DriveSubsystem driveSubsystem) {
         // each subsystem used by the command must be passed into the addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(this.driveSubsystem);
+        addRequirements(driveSubsystem);
+        this.driveSubsystem=driveSubsystem;
         this.hapticFeedback=hapticFeedback;
     }
 
@@ -32,14 +33,16 @@ public class DriveCommand extends CommandBase {
         r = UI.getXboxController().getTriggerAxis(GenericHID.Hand.kRight)-UI.getXboxController().getTriggerAxis(GenericHID.Hand.kLeft);
         p = UI.getLeftJoystickY();
 
-        r = MathAssistant.specialSqr(r);
-        p = MathAssistant.specialSqr(p);
+        //r = MathAssistant.specialSqr(r);
+        //p = MathAssistant.specialSqr(p);
 
         driveSubsystem.power(DriveBaseMath.TankDriveMath.leftPower(p, r), DriveBaseMath.TankDriveMath.rightPower(p, r));
 
         if (hapticFeedback){
             UI.getXboxController().setRumble(GenericHID.RumbleType.kLeftRumble,driveSubsystem.getGyro().getAccelFullScaleRangeG());
         }
+
+        //System.out.println("r: "+r+", p: "+p);
     }
 
     @Override

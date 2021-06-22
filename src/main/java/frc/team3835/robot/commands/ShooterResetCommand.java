@@ -19,7 +19,9 @@ public class ShooterResetCommand implements Command {
 
     @Override
     public void initialize() {
-        shooter.setAngleMotor(Constants.SHOOTER_ANGLE_VELOCITY);
+        shooter.setInUse(true);
+        shooter.setTargetAngle(90);
+        shooter.setAngleMotor(-Constants.SHOOTER_ANGLE_VELOCITY);
     }
 
     @Override
@@ -32,9 +34,11 @@ public class ShooterResetCommand implements Command {
         if (shooter.getStandingSwitchIsPressed()){
             shooter.setAngleMotor(0);
             shooter.getGyro().reset();
+            shooter.setInUse(false);
             LoggerAdapter.log("shooter reset done");
             return true;
         }
+        System.out.println("reseting");
         return false;
     }
 

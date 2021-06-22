@@ -10,13 +10,16 @@ import frc.team3835.robot.subsystems.StorageSubsystem;
 
 
 public class TriangleShootCommand extends CommandBase {
-    private final ShooterSubsystem shooterSubsystem = ShooterSubsystem.getInstance();
-    private final StorageSubsystem storageSubsystem = StorageSubsystem.getInstance();
-    private final DriveSubsystem driveSubsystem= DriveSubsystem.getInstance();
+    private final ShooterSubsystem shooterSubsystem;
+    private final StorageSubsystem storageSubsystem;
+    private final DriveSubsystem driveSubsystem;
 
-    public TriangleShootCommand() {
+    public TriangleShootCommand(ShooterSubsystem shooterSubsystem, StorageSubsystem storageSubsystem, DriveSubsystem driveSubsystem) {
         // each subsystem used by the command must be passed into the addRequirements() method (which takes a vararg of Subsystem)
-        addRequirements(this.shooterSubsystem, this.storageSubsystem, this.driveSubsystem);
+        addRequirements(shooterSubsystem, storageSubsystem, driveSubsystem);
+        this.shooterSubsystem = shooterSubsystem;
+        this.storageSubsystem = storageSubsystem;
+        this.driveSubsystem =driveSubsystem;
     }
 
     @Override

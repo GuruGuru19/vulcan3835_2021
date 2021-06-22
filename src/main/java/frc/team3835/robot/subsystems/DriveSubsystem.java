@@ -40,14 +40,17 @@ public class DriveSubsystem implements Subsystem {
 
         gyro = new AHRS(SPI.Port.kMXP);//TODO: check port
 
-        setDefaultCommand(new DriveCommand(true));
+        setDefaultCommand(new DriveCommand(false, this));
+
+        System.out.println("DriveSub ok");
     }
 
     public void power(double leftValue, double rightValue){
-        this.leftFront.set(-leftValue);
-        this.leftBack.set(-leftValue);
-        this.rightFront.set(rightValue);
-        this.rightBack.set(rightValue);
+        this.leftFront.set(leftValue);
+        this.leftBack.set(leftValue);
+        this.rightFront.set(-rightValue);
+        this.rightBack.set(-rightValue);
+        //System.out.println("drive: ("+leftValue+", "+rightValue+")");
     }
 
     public CANEncoder getEncoder(boolean left){
