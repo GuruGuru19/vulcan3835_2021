@@ -36,12 +36,12 @@ public class IntakeSubsystem implements Subsystem {
 
         setDefaultCommand(new TakeBallsCommand(this, ShooterSubsystem.getInstance()));
 
-        up = true;
+        up = false;
         on = 0;
     }
 
     public void setTarget(boolean up){
-        this.up = up;
+        //this.up = up;
     }
 
     public boolean getTarget(){

@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
 import frc.team3835.robot.MathAssistant;
@@ -27,20 +28,23 @@ public class ShooterSubsystem implements Subsystem {
     private final CANSparkMax exitVelocityMotor;
 
     private final AHRS gyro;
+    private final Encoder encoder;
 
     private final DigitalInput standingSwitch;
     private final DigitalInput downSwitch;
 
     private double targetAngle;
-    private  double targetVelocity;
+    private double targetVelocity;
 
     private boolean inUse;
+    private double lastAngle;
 
     private ShooterSubsystem() {
         angleMotor = new VictorSPX(Constants.shooterAngleMotor);
         exitVelocityMotor = new CANSparkMax(Constants.shooterExitVelocityMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
 
         gyro = new AHRS(I2C.Port.kOnboard);//TODO: check port
+        encoder = new Encoder(Constants.shooterEncoder[0], Constants.shooterEncoder[1]);
 
         standingSwitch = new DigitalInput(Constants.shooterUpSwitch);
         downSwitch = new DigitalInput(Constants.shooterDownSwitch);
@@ -48,7 +52,11 @@ public class ShooterSubsystem implements Subsystem {
         targetAngle = 90;
         targetVelocity = 0;
         inUse=false;
+
+        lastAngle = -1;
         setDefaultCommand(new ShooterMoveCommand(this));
+
+        SmartDashboard.putNumber("Shooter/target angle", 90);
     }
 
     public boolean getInUse(){
@@ -69,14 +77,14 @@ public class ShooterSubsystem implements Subsystem {
 
     public void setTargetAngle(double angle){
         if (angle>90){
-            this.targetAngle = 90;
+            SmartDashboard.putNumber("Shooter/target angle", 90);
             return;
         }
         if (angle<0){
-            this.targetAngle = 0;
+            SmartDashboard.putNumber("Shooter/target angle", 90);
             return;
         }
-        this.targetAngle = angle;
+        SmartDashboard.putNumber("Shooter/target angle", angle);
     }
 
     public double getTargetAngle(){
@@ -116,21 +124,23 @@ public class ShooterSubsystem implements Subsystem {
         if(inUse){
             return;
         }
-        System.out.println("target angle: "+targetAngle+", angle: "+getShooterAngle());
+        targetAngle = SmartDashboard.getNumber("Shooter/target angle", 90);
+        SmartDashboard.putNumber("Shooter/angle", getShooterAngle());
+        SmartDashboard.putNumber("Shooter/encoder", encoder.get());
+        //System.out.println("target angle: "+targetAngle+", angle: "+getShooterAngle());
         //System.out.println("angle target: "+targetAngle+", angle: "+getShooterAngle()+", gyro: "+gyro.getRoll()+", ss: "+standingSwitch.get()+", ds: "+downSwitch.get());
+        double power = 0;
         if(Math.abs(targetAngle - getShooterAngle())<Constants.SHOOTER_ANGLE_DEAD_ZONE || !(targetAngle>=0&&targetAngle<=90)){
-            angleMotor.set(ControlMode.PercentOutput, 0);
+            power = 0;
         }
         else if(downSwitch.get() && targetAngle<getShooterAngle()){
-            angleMotor.set(ControlMode.PercentOutput, (0.65+0.3* (Math.abs(targetAngle-getShooterAngle()))));
+            power = 0.8+(0.4-(lastAngle-getShooterAngle()))*0.2;
         }
         else if(standingSwitch.get()&&targetAngle>getShooterAngle()){
-            angleMotor.set(ControlMode.PercentOutput, -(0.65+0.3* (Math.abs(targetAngle-getShooterAngle()))));
+            power = -0.8+(-0.4-(lastAngle-getShooterAngle()))*0.2;
         }
-        else{
-            angleMotor.set(ControlMode.PercentOutput, 0);
-        }
-
+        angleMotor.set(ControlMode.PercentOutput, power);
+        SmartDashboard.putNumber("Shooter/power", power);
 
         if (targetVelocity==0){
             exitVelocityMotor.set(0);
@@ -138,6 +148,8 @@ public class ShooterSubsystem implements Subsystem {
         else{
             exitVelocityMotor.setVoltage(-(12/Constants.SHOOTER_VELOCITY_AT_12V)*targetVelocity);
         }
+
+        lastAngle = getShooterAngle();
     }
 }
 

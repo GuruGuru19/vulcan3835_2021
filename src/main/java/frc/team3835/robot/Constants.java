@@ -42,6 +42,7 @@ public final class Constants {
     public static final int shooterExitVelocityMotor = 40;//CAN
     public static final int shooterUpSwitch = 0;//DIO
     public static final int shooterDownSwitch = 9;//DIO
+    public static final int[] shooterEncoder = {8,7};//DIO
 
 
 
