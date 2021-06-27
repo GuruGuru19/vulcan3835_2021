@@ -19,7 +19,7 @@ public class MathAssistant {
 
         public static double getShootingAngle(double distance){
             double x1; double x2 = distance; double x3 = distance + 0.743;
-            double y1; double y2 = 2.49555; double y3 = 2.49555;
+            double y1 = Constants.SHOOTER_HIGHT; double y2 = 2.49555; double y3 = 2.49555;
             double A; double B;// double C;
             double a = 0; double a2;
             double ratio = 0, lastRatio = 0;
@@ -47,7 +47,7 @@ public class MathAssistant {
         }
         public static double getShootingVelocity(double distance){
             double x1 = 0; double x2 = distance; double x3 = distance + 0.743;
-            double y1 = 0; double y2 = 2.49555; double y3 = 2.49555;
+            double y1 = Constants.SHOOTER_HIGHT; double y2 = 2.49555; double y3 = 2.49555;
             double A = 0; double B = 0;// double C = 0;
             double a = 0; double a2;
             double ratio = 0, lastRatio = 0;

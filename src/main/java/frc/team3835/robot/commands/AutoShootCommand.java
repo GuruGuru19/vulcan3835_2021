@@ -1,6 +1,7 @@
 package frc.team3835.robot.commands;
 
 import edu.wpi.first.wpilibj.controller.PIDController;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team3835.lib.logger.LoggerAdapter;
 import frc.team3835.robot.Constants;
@@ -36,23 +37,38 @@ public class AutoShootCommand extends CommandBase {
     public void initialize() {
         if (cameraSubsystem.getTa()==0){
             end(false);
+            return;
         }
         driveSubsystem.power(0,0);
-        double distance = Math.tan(MathAssistant.degToRad(cameraSubsystem.getTy()+Constants.CAMERA_ANGLE))/(2.49555-Constants.CAMERA_HIGHT);//Y axis
+        double distance = SmartDashboard.getNumber("Camera/distance", 0)+Constants.CAMERA_DISTANCE_FROM_SHOOTER_X;//Y axis
         double velocity = MathAssistant.ShootingAssistant.getShootingVelocity(distance);
-        double angle = MathAssistant.ShootingAssistant.getShootingAngle(distance);
-        shooterSubsystem.setVelocityTarget(MathAssistant.ShootingAssistant.getShootingVelocity(distance));
-        shooterSubsystem.setTargetAngle(MathAssistant.ShootingAssistant.getShootingAngle(distance));
-        LoggerAdapter.log(this.getClass().getName()+" initialized. distance: "+distance+"[m], shooter angle: "+angle+"[deg], exit velocity: "+velocity+"[m/s], x-axis error: "+cameraSubsystem.getTxFromMid()+"[deg]");
+        double targetAngle = MathAssistant.ShootingAssistant.getShootingAngle(distance);
+        shooterSubsystem.setVelocityTarget(velocity);
+        shooterSubsystem.setTargetAngle(targetAngle+ShooterSubsystem.angleOffSet);
+        LoggerAdapter.log(this.getClass().getName()+" initialized. distance: "+distance+"[m], shooter angle: "+targetAngle+"[deg], exit velocity: "+velocity+"[m/s], x-axis error: "+cameraSubsystem.getTxFromMid()+"[deg]");
     }
 
     @Override
     public void execute() {
-        driveSubsystem.power(xAxisController.calculate(cameraSubsystem.getTxFromMid()), -xAxisController.calculate(cameraSubsystem.getTxFromMid()));
-
-        if (shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()){
-            storageSubsystem.setPower(Constants.STORAGE_POWER);
-            withTimeout(Constants.SHOOTER_STORAGE_MOVING_TIME);
+        //driveSubsystem.power(xAxisController.calculate(cameraSubsystem.getTxFromMid()), -xAxisController.calculate(cameraSubsystem.getTxFromMid()));
+        boolean xAxisOnTarget = Math.abs(cameraSubsystem.getTxFromMid())<Constants.DRIVE_TURN_ANGLE_TOLERANCE/2;
+        if (xAxisOnTarget){
+            driveSubsystem.power(0,0);
+        }
+        else if (cameraSubsystem.getTxFromMid()<0){
+            driveSubsystem.power(Constants.DRIVE_SLOW_TURN_POWER,-Constants.DRIVE_SLOW_TURN_POWER);
+        }
+        else if (cameraSubsystem.getTxFromMid()>0){
+            driveSubsystem.power(-Constants.DRIVE_SLOW_TURN_POWER,Constants.DRIVE_SLOW_TURN_POWER);
+        }
+        else {
+            driveSubsystem.power(0,0);
+        }
+        SmartDashboard.putBoolean("AutoShoot/isOnVelocityTarget", shooterSubsystem.isOnVelocitySetpoint());
+        SmartDashboard.putBoolean("AutoShoot/isOnAngleSetpoint", shooterSubsystem.isOnAngleSetpoint());
+        if (shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()){//TODO: x-axis
+            storageSubsystem.setPower(Constants.STORAGE_POWER*0.5);
+            //withTimeout(Constants.SHOOTER_STORAGE_MOVING_TIME);
         }
         else {
             storageSubsystem.setPower(0);

@@ -34,6 +34,7 @@ public class ShooterResetCommand implements Command {
         if (shooter.getStandingSwitchIsPressed()){
             shooter.setAngleMotor(0);
             shooter.getGyro().reset();
+            shooter.getEncoder().reset();
             shooter.setInUse(false);
             LoggerAdapter.log("shooter reset done");
             return true;

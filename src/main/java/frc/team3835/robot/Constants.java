@@ -51,15 +51,15 @@ public final class Constants {
 
     //shooter constants
     public static final double SHOOTER_ANGLE_VELOCITY = 0.85;//prec
-    public static final double SHOOTER_ANGLE_DEAD_ZONE = 1;//deg
-    public static final double SHOOTER_VELOCITY_TOLERANCE = 200;//rpm TODO: find Tolerance
-    public static final double SHOOTER_VELOCITY_AT_12V = 6000;//rpm TODO: find
+    public static final double SHOOTER_ANGLE_DEAD_ZONE = 5;//deg
+    public static final double SHOOTER_VELOCITY_TOLERANCE = 100;//rpm
+    public static final double SHOOTER_VELOCITY_AT_1V = 445;//rpm
     public static final double SHOOTER_VELOCITY_WHEEL_DIAMETER = 4*0.0254;
     public static final double SHOOTER_VELOCITY_WHEEL_REDUCTION = 1;
     public static final double SHOOTER_VELOCITY_CONVERTER_CONSTANT = 60/(2*Math.PI*(SHOOTER_VELOCITY_WHEEL_DIAMETER/2));// from liner velocity to rotational velocity
     public static final double SHOOTER_VELOCITY_CONSTANT = 1;
-    public static final double SHOOTER_TRIANGLE_SHOT_VELOCITY = 0;//m/s TODO: set up values
-    public static final double SHOOTER_TRIANGLE_SHOT_ANGLE = 0;//deg
+    public static final double SHOOTER_TRIANGLE_SHOT_VELOCITY = 5.8;//m/s TODO: set up values
+    public static final double SHOOTER_TRIANGLE_SHOT_ANGLE = 79;//deg
     public static final double SHOOTER_STORAGE_MOVING_TIME = 4;//sec
 
     //intake constants
@@ -79,10 +79,14 @@ public final class Constants {
     public static final double DRIVE_TURN_PID_KD = 0;
     public static final double DRIVE_TURN_PID_P_TOLERANCE = 1;//deg
     public static final double DRIVE_TURN_PID_V_TOLERANCE = 0;//deg/s
+    public static final double DRIVE_TURN_ANGLE_TOLERANCE = 1;//deg
+    public static final double DRIVE_SLOW_TURN_POWER = 1;//prc
 
     //robot dimensions
-    public static final double SHOOTER_LENGTH = 0.45; //m TODO: find
-    public static final double SHOOTER_HIGHT = 0.2; //m TODO: find
-    public static final double CAMERA_HIGHT = 0.4;//m TODO: find
-    public static final double CAMERA_ANGLE = 30;//deg TODO: find
+    public static final double SHOOTER_LENGTH = 0.6; //m TODO: find
+    public static final double SHOOTER_HIGHT = 0.268; //m TODO: find
+    public static final double CAMERA_HIGHT = 0.64;//m TODO: find
+    public static final double CAMERA_ANGLE = 34;//deg TODO: find
+    public static final double CAMERA_DISTANCE_FROM_MID = 0.291;//m
+    public static final double CAMERA_DISTANCE_FROM_SHOOTER_X = 0.4;//m
 }

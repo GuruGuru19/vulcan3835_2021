@@ -3,6 +3,7 @@ package frc.team3835.robot.subsystems;
 
 import com.revrobotics.CANDigitalInput;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
@@ -55,16 +56,17 @@ public class IntakeSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        if (limitSwitchUp.get() && up) {
-            angleMotor.set(ControlMode.PercentOutput, Constants.INTAKE_POWERUP);//
-        }
-        else if (limitSwitchDown.get() && !up){
-            angleMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_POWERDOWN);//
-        }
-        else {
-            angleMotor.set(ControlMode.PercentOutput,0);
-        }
-
+        SmartDashboard.putBoolean("Intake down ls", limitSwitchDown.get());
+        //if (limitSwitchUp.get() && up) {
+        //    angleMotor.set(ControlMode.PercentOutput, Constants.INTAKE_POWERUP);//
+        //}
+        //else if (limitSwitchDown.get() && !up){
+        //    angleMotor.set(ControlMode.PercentOutput, -Constants.INTAKE_POWERDOWN);//
+        //}
+        //else {
+        //    angleMotor.set(ControlMode.PercentOutput,0);
+        //}
+        angleMotor.set(ControlMode.PercentOutput, 0);
         powerMotor.set(ControlMode.PercentOutput, on);
     }
 }
