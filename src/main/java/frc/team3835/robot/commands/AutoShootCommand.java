@@ -56,10 +56,10 @@ public class AutoShootCommand extends CommandBase {
             driveSubsystem.power(0,0);
         }
         else if (cameraSubsystem.getTxFromMid()<0){
-            driveSubsystem.power(Constants.DRIVE_SLOW_TURN_POWER,-Constants.DRIVE_SLOW_TURN_POWER);
+            driveSubsystem.power(0,Constants.DRIVE_SLOW_TURN_POWER);
         }
         else if (cameraSubsystem.getTxFromMid()>0){
-            driveSubsystem.power(-Constants.DRIVE_SLOW_TURN_POWER,Constants.DRIVE_SLOW_TURN_POWER);
+            driveSubsystem.power(Constants.DRIVE_SLOW_TURN_POWER,0);
         }
         else {
             driveSubsystem.power(0,0);

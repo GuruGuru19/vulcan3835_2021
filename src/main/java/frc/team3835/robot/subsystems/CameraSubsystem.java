@@ -49,9 +49,14 @@ public class CameraSubsystem extends SubsystemBase {
     }
 
     public double getTxFromMid(){
-        return 90-MathAssistant.radToDeg(Math.atan(
-                (SmartDashboard.getNumber("Camera/distance",0)*MathAssistant.sin(90-tx.getDouble(0)))
-                /(SmartDashboard.getNumber("Camera/distance",0)*MathAssistant.cos(90-tx.getDouble(0))-Constants.CAMERA_DISTANCE_FROM_MID)));
+        double value = 90-MathAssistant.radToDeg(Math.atan(
+                (SmartDashboard.getNumber("Camera/distance",0)*MathAssistant.cos(tx.getDouble(0)))
+                /(SmartDashboard.getNumber("Camera/distance",0)*MathAssistant.sin(tx.getDouble(0))-Constants.CAMERA_DISTANCE_FROM_MID)));
+        value+=Constants.SHOOTER_ANGLE_OFFSET_FROM_MID;
+        if (value > 90){
+            return value-180;
+        }
+        return value;
     }
 
     public Number getPipeline(){

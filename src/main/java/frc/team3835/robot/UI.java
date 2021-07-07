@@ -40,7 +40,7 @@ public class UI {
 
     public UI(ShooterSubsystem shooterSubsystem, StorageSubsystem storageSubsystem, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem){
         xButton.whenPressed(new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
-        bButton.whenPressed(new TriangleShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
+        bButton.whenReleased(new TriangleShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
         yButton.whenPressed(new TranchRunCommand(intakeSubsystem, shooterSubsystem));
         System.out.println("UI ok");
         instance = this;

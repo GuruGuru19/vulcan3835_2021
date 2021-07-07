@@ -18,11 +18,11 @@ import frc.team3835.robot.commands.ShooterMoveCommand;
 
 public class ShooterSubsystem implements Subsystem {
 
-    public static final double FFPower = 0.8;
+    public static final double FFPower = 0.7;
     public static final double shooterAngleSetPoint = 0.3;
     public static final double shooterAngleKP = 0.4;
 
-    public static final double angleOffSet = 0;
+    public static final double angleOffSet = -8;
     public static final double velocityOffset = 0;
 
 
@@ -117,7 +117,8 @@ public class ShooterSubsystem implements Subsystem {
 
     public void setVelocityTarget(double velocity){
         this.targetVelocity = velocity*Constants.SHOOTER_VELOCITY_CONVERTER_CONSTANT*Constants.SHOOTER_VELOCITY_CONSTANT*Constants.SHOOTER_VELOCITY_WHEEL_REDUCTION;
-        this.targetVelocity *= ((4/3.0));
+        //this.targetVelocity *= ((4/3.0));
+        this.targetVelocity *= 2;
         this.targetVelocity +=velocity;
     }
 
@@ -135,14 +136,17 @@ public class ShooterSubsystem implements Subsystem {
 
     @Override
     public void periodic() {
-        if(inUse){
-            return;
-        }
+
         targetAngle = SmartDashboard.getNumber("Shooter/target angle", 90);
         SmartDashboard.putNumber("Shooter/angle", getShooterAngle());
         SmartDashboard.putNumber("Shooter/encoder", encoder.getDistance());
         SmartDashboard.putNumber("Shooter/target rpm", targetVelocity);
         SmartDashboard.putNumber("Shooter/rpm", exitVelocityMotor.getEncoder().getVelocity());
+        SmartDashboard.putBoolean("Shooter/down switch", downSwitch.get());
+        SmartDashboard.putBoolean("Shooter/90 deg switch", standingSwitch.get());
+        if(inUse){
+            return;
+        }
         if (false){
 
             exitVelocityMotor.setVoltage(-8);
@@ -163,7 +167,7 @@ public class ShooterSubsystem implements Subsystem {
             //}
         }
         else if(standingSwitch.get()&&targetAngle>currentAngle){
-            power = -FFPower+(-shooterAngleSetPoint-(lastAngle-currentAngle))*shooterAngleKP;
+            power = (-FFPower+(-shooterAngleSetPoint-(lastAngle-currentAngle))*shooterAngleKP)*0.4;
         }
         angleMotor.set(ControlMode.PercentOutput, power);
         SmartDashboard.putNumber("Shooter/power", power);

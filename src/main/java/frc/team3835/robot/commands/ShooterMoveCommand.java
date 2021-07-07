@@ -21,19 +21,34 @@ public class ShooterMoveCommand extends CommandBase {
     @Override
     public void initialize() {
         on = false;
+        //shooterSubsystem.setInUse(true);
     }
 
     @Override
     public void execute() {
 //        System.out.println(UI.getRightJoystickY());
 //        System.out.println(shooterSubsystem==null);
+        if (false){
+            shooterSubsystem.setAngleMotor(UI.getRightJoystickY());
+            return;
+        }
+
         if (UI.getRightJoystickY() < 0 && !shooterSubsystem.getStandingSwitchIsPressed()){
-            shooterSubsystem.setTargetAngle(shooterSubsystem.getTargetAngle()+0.5);
+            shooterSubsystem.setInUse(true);
+            shooterSubsystem.setAngleMotor(UI.getRightJoystickY());
+            on = true;
         }
         else if(UI.getRightJoystickY() > 0 && !shooterSubsystem.getDownSwitchIsPressed()){
-            shooterSubsystem.setTargetAngle(shooterSubsystem.getTargetAngle()-0.5);
+            shooterSubsystem.setInUse(true);
+            shooterSubsystem.setAngleMotor(UI.getRightJoystickY());
+            on = true;
+            //shooterSubsystem.setTargetAngle(shooterSubsystem.getTargetAngle()-0.5);
         }
-        System.out.println(UI.getR3());
+        else if (on){
+            on = false;
+            shooterSubsystem.setTargetAngle(shooterSubsystem.getShooterAngle());
+        }
+       
 
         if (UI.getXboxController().getStickButtonPressed(GenericHID.Hand.kRight)){
             if (on) {

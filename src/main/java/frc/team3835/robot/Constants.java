@@ -38,7 +38,7 @@ public final class Constants {
 
 
     //shooter subsystem
-    public static final int shooterAngleMotor = 25;//CAN
+    public static final int shooterAngleMotor = 23;//CAN
     public static final int shooterExitVelocityMotor = 40;//CAN
     public static final int shooterUpSwitch = 0;//DIO
     public static final int shooterDownSwitch = 9;//DIO
@@ -79,8 +79,8 @@ public final class Constants {
     public static final double DRIVE_TURN_PID_KD = 0;
     public static final double DRIVE_TURN_PID_P_TOLERANCE = 1;//deg
     public static final double DRIVE_TURN_PID_V_TOLERANCE = 0;//deg/s
-    public static final double DRIVE_TURN_ANGLE_TOLERANCE = 1;//deg
-    public static final double DRIVE_SLOW_TURN_POWER = 1;//prc
+    public static final double DRIVE_TURN_ANGLE_TOLERANCE = 3;//deg
+    public static final double DRIVE_SLOW_TURN_POWER = 0.08;//prc
 
     //robot dimensions
     public static final double SHOOTER_LENGTH = 0.6; //m TODO: find
@@ -89,4 +89,5 @@ public final class Constants {
     public static final double CAMERA_ANGLE = 34;//deg TODO: find
     public static final double CAMERA_DISTANCE_FROM_MID = 0.291;//m
     public static final double CAMERA_DISTANCE_FROM_SHOOTER_X = 0.4;//m
+    public static final double SHOOTER_ANGLE_OFFSET_FROM_MID = 6;//m
 }
