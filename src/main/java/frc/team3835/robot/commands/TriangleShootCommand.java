@@ -1,8 +1,10 @@
 package frc.team3835.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.team3835.lib.logger.LoggerAdapter;
 import frc.team3835.robot.Constants;
+import frc.team3835.robot.MathAssistant;
 import frc.team3835.robot.UI;
 import frc.team3835.robot.subsystems.DriveSubsystem;
 import frc.team3835.robot.subsystems.ShooterSubsystem;
@@ -24,17 +26,19 @@ public class TriangleShootCommand extends CommandBase {
 
     @Override
     public void initialize() {
-        LoggerAdapter.log(this.getClass().getName()+" initialized");
-        shooterSubsystem.setTargetAngle(Constants.SHOOTER_TRIANGLE_SHOT_ANGLE);
-        shooterSubsystem.setVelocityTarget(Constants.SHOOTER_TRIANGLE_SHOT_VELOCITY);
-        this.driveSubsystem.power(0,0);
+        driveSubsystem.power(0,0);
+        double velocity = Constants.SHOOTER_TRIANGLE_SHOT_VELOCITY;
+        double targetAngle = Constants.SHOOTER_TRIANGLE_SHOT_ANGLE;
+        shooterSubsystem.setVelocityTarget(velocity);
+        shooterSubsystem.setTargetAngle(targetAngle);
+        LoggerAdapter.log(this.getClass().getName()+" initialized. shooter angle: "+targetAngle+"[deg], exit velocity: "+velocity+"[m/s]");
     }
 
     @Override
     public void execute() {
         if (shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()){
-            storageSubsystem.setPower(Constants.STORAGE_POWER);
-            withTimeout(Constants.SHOOTER_STORAGE_MOVING_TIME);
+            storageSubsystem.setPower(Constants.STORAGE_POWER*0.5);
+            //withTimeout(Constants.SHOOTER_STORAGE_MOVING_TIME);
         }
         else {
             storageSubsystem.setPower(0);
@@ -43,7 +47,7 @@ public class TriangleShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return UI.getXboxController().getBackButton();
+        return UI.getXbox2Controller().getBackButton();
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ShooterSubsystem implements Subsystem {
     public static final double shooterAngleSetPoint = 0.3;
     public static final double shooterAngleKP = 0.4;
 
-    public static final double angleOffSet = -8;
+    public static final double angleOffSet = -4;
     public static final double velocityOffset = 0;
 
 
@@ -51,7 +51,7 @@ public class ShooterSubsystem implements Subsystem {
         angleMotor = new VictorSPX(Constants.shooterAngleMotor);
         exitVelocityMotor = new CANSparkMax(Constants.shooterExitVelocityMotor, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        gyro = new AHRS(I2C.Port.kOnboard);//TODO: check port
+        gyro = new AHRS(I2C.Port.kOnboard);
         encoder = new Encoder(Constants.shooterEncoder[0], Constants.shooterEncoder[1]);
         encoder.setDistancePerPulse(0.165);
         standingSwitch = new DigitalInput(Constants.shooterUpSwitch);
@@ -140,6 +140,8 @@ public class ShooterSubsystem implements Subsystem {
         targetAngle = SmartDashboard.getNumber("Shooter/target angle", 90);
         SmartDashboard.putNumber("Shooter/angle", getShooterAngle());
         SmartDashboard.putNumber("Shooter/encoder", encoder.getDistance());
+        SmartDashboard.putBoolean("Shooter/velocity on target", isOnVelocitySetpoint());
+        SmartDashboard.putBoolean("Shooter/angle on target", isOnAngleSetpoint());
         SmartDashboard.putNumber("Shooter/target rpm", targetVelocity);
         SmartDashboard.putNumber("Shooter/rpm", exitVelocityMotor.getEncoder().getVelocity());
         SmartDashboard.putBoolean("Shooter/down switch", downSwitch.get());

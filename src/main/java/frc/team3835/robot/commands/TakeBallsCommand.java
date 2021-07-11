@@ -1,6 +1,7 @@
 package frc.team3835.robot.commands;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Subsystem;
@@ -28,11 +29,11 @@ public class TakeBallsCommand extends CommandBase {
 
     @Override
     public void execute() {
-        if (UI.getXboxA()){
+        if (UI.getXboxAorBump()){
             intake.setTarget(false);
             intake.setOn(Constants.INTAKE_POWER_TAKE);
         }
-        else if(UI.getL3()){
+        else if(UI.getXboxController().getBButton()){
             intake.setTarget(false);
             intake.setOn(-Constants.INTAKE_POWER_TAKE);
         }

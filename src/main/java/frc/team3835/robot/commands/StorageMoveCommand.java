@@ -25,16 +25,16 @@ public class StorageMoveCommand implements Command {
 
     @Override
     public void execute() {
-        if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)&&UI.getXboxController().getBumper(GenericHID.Hand.kLeft)){
+        if (UI.getXbox2Controller().getBumper(GenericHID.Hand.kRight)&&UI.getXbox2Controller().getBumper(GenericHID.Hand.kLeft)){
             storageSubsystem.setPower(0);
         }
-        else if (UI.getXboxController().getBumper(GenericHID.Hand.kLeft)){
+        else if (UI.getXbox2Controller().getBumper(GenericHID.Hand.kLeft)){
             storageSubsystem.setPower(-Constants.STORAGE_POWER);
         }
         else if (storageSubsystem.getVoltage() < Constants.STORAGE_SENSOR_BALL_UP_BOUND && storageSubsystem.getVoltage() > Constants.STORAGE_SENSOR_BALL_DOWN_BOUND){
             storageSubsystem.setPower(Constants.STORAGE_POWER*0.8);
         }
-        else if (UI.getXboxController().getBumper(GenericHID.Hand.kRight)){
+        else if (UI.getXbox2Controller().getBumper(GenericHID.Hand.kRight)){
             storageSubsystem.setPower(Constants.STORAGE_POWER);
         }
         else {

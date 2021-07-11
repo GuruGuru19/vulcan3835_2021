@@ -38,7 +38,7 @@ public class DriveSubsystem implements Subsystem {
         this.rightFront = new CANSparkMax(Constants.driveSubRightFront, CANSparkMaxLowLevel.MotorType.kBrushless);
         this.rightBack = new CANSparkMax(Constants.driveSubRightBack, CANSparkMaxLowLevel.MotorType.kBrushless);
 
-        gyro = new AHRS(SPI.Port.kMXP);//TODO: check port
+        gyro = new AHRS(SPI.Port.kMXP);
 
         setDefaultCommand(new DriveCommand(false, this));
 

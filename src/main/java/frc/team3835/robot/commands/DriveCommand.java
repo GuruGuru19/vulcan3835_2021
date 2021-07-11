@@ -35,6 +35,7 @@ public class DriveCommand extends CommandBase {
 
         //r = MathAssistant.specialSqr(r);
         //p = MathAssistant.specialSqr(p);
+        p*=UI.getXboxController().getStickButton(GenericHID.Hand.kLeft)?1:0.5;
 
         driveSubsystem.power(DriveBaseMath.TankDriveMath.leftPower(p, r), DriveBaseMath.TankDriveMath.rightPower(p, r));
 

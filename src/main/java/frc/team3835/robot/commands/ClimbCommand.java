@@ -22,10 +22,10 @@ public class ClimbCommand extends CommandBase {
     @Override
     public void execute() {
 
-        if (UI.getXboxController().getPOV(0)==0){
+        if (UI.getXbox2Controller().getPOV(0)==0){
             climbSubsystem.setPower(1);
         }
-        else if (UI.getXboxController().getPOV(0)==180){
+        else if (UI.getXbox2Controller().getPOV(0)==180){
             climbSubsystem.setPower(-1);
         }
         else {

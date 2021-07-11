@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import frc.team3835.robot.commands.AutoShootCommand;
+import frc.team3835.robot.commands.ShooterResetCommand;
 import frc.team3835.robot.commands.TranchRunCommand;
 import frc.team3835.robot.commands.TriangleShootCommand;
 import frc.team3835.robot.subsystems.DriveSubsystem;
@@ -20,6 +21,7 @@ public class UI {
     public static final double JOY_DEADZONE = 0.08;
 
     public static final XboxController xboxController = new XboxController(Constants.Xbox);
+    public static final XboxController xboxController2 = new XboxController(Constants.Xbox2);
 
     private static Button aButton = new JoystickButton(xboxController, XboxController.Button.kA.value);
     private static Button bButton = new JoystickButton(xboxController, XboxController.Button.kB.value);
@@ -32,6 +34,17 @@ public class UI {
     private static Button startButton = new JoystickButton(xboxController, XboxController.Button.kStart.value);
     private static Button backButton = new JoystickButton(xboxController, XboxController.Button.kBack.value);
 
+    private static Button aButton2 = new JoystickButton(xboxController2, XboxController.Button.kA.value);
+    private static Button bButton2 = new JoystickButton(xboxController2, XboxController.Button.kB.value);
+    private static Button xButton2 = new JoystickButton(xboxController2, XboxController.Button.kX.value);
+    private static Button yButton2 = new JoystickButton(xboxController2, XboxController.Button.kY.value);
+    private static Button lbButton2 = new JoystickButton(xboxController2, XboxController.Button.kBumperLeft.value);
+    private static Button lsButton2 = new JoystickButton(xboxController2, XboxController.Button.kStickLeft.value);
+    private static Button rbButton2 = new JoystickButton(xboxController2, XboxController.Button.kBumperRight.value);
+    private static Button rsButton2 = new JoystickButton(xboxController2, XboxController.Button.kStickRight.value);
+    private static Button startButton2 = new JoystickButton(xboxController2, XboxController.Button.kStart.value);
+    private static Button backButton2 = new JoystickButton(xboxController2, XboxController.Button.kBack.value);
+
 
 
 
@@ -39,9 +52,11 @@ public class UI {
 
 
     public UI(ShooterSubsystem shooterSubsystem, StorageSubsystem storageSubsystem, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem){
-        xButton.whenPressed(new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
-        bButton.whenReleased(new TriangleShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
+        xButton2.whenPressed(new ShooterResetCommand());
+        xButton2.whenPressed(new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
+        bButton2.whenReleased(new TriangleShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
         yButton.whenPressed(new TranchRunCommand(intakeSubsystem, shooterSubsystem));
+
         System.out.println("UI ok");
         instance = this;
     }
@@ -51,17 +66,8 @@ public class UI {
     }
 
 
-    public static boolean getXboxA(){
-        return xboxController.getAButton();
-    }
-    public static boolean getXboxX(){
-        return xboxController.getXButton();
-    }
-    public static boolean getXboxY(){
-        return xboxController.getYButton();
-    }
-    public static boolean getXboxB(){
-        return xboxController.getBButton();
+    public static boolean getXboxAorBump(){
+        return xboxController.getAButton() || xboxController.getBumper(Hand.kRight) || xboxController .getBumper(Hand.kLeft);
     }
 
     public static double getLeftJoystickY(){
@@ -102,5 +108,9 @@ public class UI {
 
     public static XboxController getXboxController(){
         return xboxController;
+    }
+
+    public static XboxController getXbox2Controller(){
+        return xboxController2;
     }
 }

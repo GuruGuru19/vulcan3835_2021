@@ -25,13 +25,12 @@ public class AutoShootCommand extends CommandBase {
         addRequirements(shooterSubsystem, storageSubsystem, driveSubsystem);
         this.shooterSubsystem = shooterSubsystem;
         this.storageSubsystem = storageSubsystem;
-        this.driveSubsystem =driveSubsystem;
-        xAxisController = new PIDController(Constants.DRIVE_TURN_PID_KP, Constants.DRIVE_TURN_PID_KI, Constants.DRIVE_TURN_PID_KD);
-        xAxisController.setTolerance(Constants.DRIVE_TURN_PID_P_TOLERANCE, Constants.DRIVE_TURN_PID_V_TOLERANCE);
-        xAxisController.setSetpoint(0);
+        this.driveSubsystem = driveSubsystem;
     }
 
-
+    public static double offSet(double d){
+        return 0.4167*d*d*d-2*d*d-0.9167*d-1.5;
+    }
 
     @Override
     public void initialize() {
@@ -44,7 +43,8 @@ public class AutoShootCommand extends CommandBase {
         double velocity = MathAssistant.ShootingAssistant.getShootingVelocity(distance);
         double targetAngle = MathAssistant.ShootingAssistant.getShootingAngle(distance);
         shooterSubsystem.setVelocityTarget(velocity);
-        shooterSubsystem.setTargetAngle(targetAngle+ShooterSubsystem.angleOffSet);
+        shooterSubsystem.setTargetAngle(targetAngle+offSet(distance));
+        SmartDashboard.putNumber("AutoShoot/ angle off set", offSet(distance));
         LoggerAdapter.log(this.getClass().getName()+" initialized. distance: "+distance+"[m], shooter angle: "+targetAngle+"[deg], exit velocity: "+velocity+"[m/s], x-axis error: "+cameraSubsystem.getTxFromMid()+"[deg]");
     }
 
@@ -64,9 +64,7 @@ public class AutoShootCommand extends CommandBase {
         else {
             driveSubsystem.power(0,0);
         }
-        SmartDashboard.putBoolean("AutoShoot/isOnVelocityTarget", shooterSubsystem.isOnVelocitySetpoint());
-        SmartDashboard.putBoolean("AutoShoot/isOnAngleSetpoint", shooterSubsystem.isOnAngleSetpoint());
-        if (shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()){//TODO: x-axis
+        if (shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()&&xAxisOnTarget){
             storageSubsystem.setPower(Constants.STORAGE_POWER*0.5);
             //withTimeout(Constants.SHOOTER_STORAGE_MOVING_TIME);
         }
@@ -77,7 +75,7 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return UI.getXboxController().getBackButton();
+        return UI.getXbox2Controller().getBackButton();
     }
 
     @Override
