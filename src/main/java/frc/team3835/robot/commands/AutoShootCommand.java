@@ -34,6 +34,8 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        shoot = false;
+        System.out.println("Auto Shooting");
         if (cameraSubsystem.getTa()==0){
             end(false);
             return;
@@ -48,10 +50,14 @@ public class AutoShootCommand extends CommandBase {
         LoggerAdapter.log(this.getClass().getName()+" initialized. distance: "+distance+"[m], shooter angle: "+targetAngle+"[deg], exit velocity: "+velocity+"[m/s], x-axis error: "+cameraSubsystem.getTxFromMid()+"[deg]");
     }
 
+    boolean shoot;
+
     @Override
     public void execute() {
         //driveSubsystem.power(xAxisController.calculate(cameraSubsystem.getTxFromMid()), -xAxisController.calculate(cameraSubsystem.getTxFromMid()));
         boolean xAxisOnTarget = Math.abs(cameraSubsystem.getTxFromMid())<Constants.DRIVE_TURN_ANGLE_TOLERANCE/2;
+        SmartDashboard.putBoolean("AutoShoot/x on target", xAxisOnTarget);
+
         if (xAxisOnTarget){
             driveSubsystem.power(0,0);
         }
@@ -64,8 +70,9 @@ public class AutoShootCommand extends CommandBase {
         else {
             driveSubsystem.power(0,0);
         }
-        if (shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()&&xAxisOnTarget){
-            storageSubsystem.setPower(Constants.STORAGE_POWER*0.5);
+        SmartDashboard.putBoolean("AutoShoot/ moving storage", shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()&&xAxisOnTarget);
+        if ((shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()&&xAxisOnTarget)){
+            storageSubsystem.setPower(Constants.STORAGE_POWER);
             //withTimeout(Constants.SHOOTER_STORAGE_MOVING_TIME);
         }
         else {
@@ -75,7 +82,7 @@ public class AutoShootCommand extends CommandBase {
 
     @Override
     public boolean isFinished() {
-        return UI.getXbox2Controller().getBackButton();
+        return UI.getXbox2Controller().getBackButton() || UI.getXboxController().getBackButton();
     }
 
     @Override

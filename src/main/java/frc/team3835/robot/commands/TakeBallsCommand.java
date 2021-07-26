@@ -16,6 +16,8 @@ public class TakeBallsCommand extends CommandBase {
     private final IntakeSubsystem intake;
     private final ShooterSubsystem shooter;
 
+    private final double INTAKE_DEADZONE = 0.08;
+
     public TakeBallsCommand(IntakeSubsystem intake, ShooterSubsystem shooter) {
         addRequirements(intake);
         this.intake = intake;
@@ -46,6 +48,13 @@ public class TakeBallsCommand extends CommandBase {
             }
             intake.setOn(0);
         }
+
+        //if (Math.abs(UI.getXbox2Controller().getY(GenericHID.Hand.kLeft))>=INTAKE_DEADZONE){
+          //  intake.setAngleMotor(-UI.getXbox2Controller().getY(GenericHID.Hand.kLeft));
+        //}
+        //else{
+        //    intake.setAngleMotor(0);
+        //}
     }
 
     @Override

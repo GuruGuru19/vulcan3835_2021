@@ -53,6 +53,9 @@ public class IntakeSubsystem implements Subsystem {
         on = power;
     }
 
+    public void setAngleMotor(double power){
+        angleMotor.set(ControlMode.PercentOutput, power*0.7);
+    }
 
     @Override
     public void periodic() {

@@ -14,9 +14,9 @@ public class TranchRunCommand extends CommandBase {
     private final ShooterSubsystem shooterSubsystem;
 
     public TranchRunCommand(IntakeSubsystem intakeSubsystem, ShooterSubsystem shooterSubsystem) {
-        addRequirements(intakeSubsystem, shooterSubsystem);
         this.intakeSubsystem=intakeSubsystem;
         this.shooterSubsystem=shooterSubsystem;
+        addRequirements(intakeSubsystem, shooterSubsystem);
     }
 
     @Override

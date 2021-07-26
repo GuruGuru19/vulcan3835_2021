@@ -6,11 +6,9 @@ import frc.team3835.robot.subsystems.DriveSubsystem;
 
 public class MoveBackCommand extends CommandBase {
     private final DriveSubsystem driveSubsystem;
-    private double time;
 
-    public MoveBackCommand(DriveSubsystem driveSubsystem, double time) {
+    public MoveBackCommand(DriveSubsystem driveSubsystem) {
         this.driveSubsystem = driveSubsystem;
-        this.time=time;
         // each subsystem used by the command must be passed into the addRequirements() method (which takes a vararg of Subsystem)
         addRequirements(this.driveSubsystem);
 
@@ -18,8 +16,8 @@ public class MoveBackCommand extends CommandBase {
 
     @Override
     public void initialize() {
+        System.out.println("Moving Back");
         driveSubsystem.power(-0.4, -0.4);
-        withTimeout(this.time);
     }
 
     @Override

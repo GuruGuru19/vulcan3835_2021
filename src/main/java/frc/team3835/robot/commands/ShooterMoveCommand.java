@@ -27,21 +27,22 @@ public class ShooterMoveCommand extends CommandBase {
     @Override
     public void execute() {
 
-        if (UI.getXbox2Controller().getY(GenericHID.Hand.kRight) < 0 && !shooterSubsystem.getStandingSwitchIsPressed()){
-            shooterSubsystem.setInUse(true);
-            shooterSubsystem.setAngleMotor(UI.getRightJoystickY());
-            on = true;
-        }
-        else if(UI.getXbox2Controller().getY(GenericHID.Hand.kRight) > 0 && !shooterSubsystem.getDownSwitchIsPressed()){
-            shooterSubsystem.setInUse(true);
-            shooterSubsystem.setAngleMotor(UI.getXbox2Controller().getY(GenericHID.Hand.kRight));
-            on = true;
-            //shooterSubsystem.setTargetAngle(shooterSubsystem.getTargetAngle()-0.5);
-        }
-        else if (on){
-            on = false;
-            shooterSubsystem.setTargetAngle(shooterSubsystem.getShooterAngle());
-        }
+//        if (UI.getXbox2Controller().getY(GenericHID.Hand.kRight) < 0 && !shooterSubsystem.getStandingSwitchIsPressed()){
+//            shooterSubsystem.setInUse(true);
+//            shooterSubsystem.setAngleMotor(UI.getRightJoystickY());
+//            on = true;
+//        }
+//        else if(UI.getXbox2Controller().getY(GenericHID.Hand.kRight) > 0 && !shooterSubsystem.getDownSwitchIsPressed()){
+//            shooterSubsystem.setInUse(true);
+//            shooterSubsystem.setAngleMotor(UI.getXbox2Controller().getY(GenericHID.Hand.kRight));
+//            on = true;
+//            //shooterSubsystem.setTargetAngle(shooterSubsystem.getTargetAngle()-0.5);
+//        }
+//        else if (on){
+//            on = false;
+//            shooterSubsystem.setTargetAngle(shooterSubsystem.getShooterAngle());
+//        }
+
        
 
         if (UI.getXbox2Controller().getStickButtonPressed(GenericHID.Hand.kRight)){

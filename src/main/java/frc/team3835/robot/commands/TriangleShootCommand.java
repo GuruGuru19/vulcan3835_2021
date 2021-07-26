@@ -37,7 +37,7 @@ public class TriangleShootCommand extends CommandBase {
     @Override
     public void execute() {
         if (shooterSubsystem.isOnVelocitySetpoint() && shooterSubsystem.isOnAngleSetpoint()){
-            storageSubsystem.setPower(Constants.STORAGE_POWER*0.5);
+            storageSubsystem.setPower(Constants.STORAGE_POWER);
             //withTimeout(Constants.SHOOTER_STORAGE_MOVING_TIME);
         }
         else {

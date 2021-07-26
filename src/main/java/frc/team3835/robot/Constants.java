@@ -59,7 +59,7 @@ public final class Constants {
     public static final double SHOOTER_VELOCITY_WHEEL_REDUCTION = 1;
     public static final double SHOOTER_VELOCITY_CONVERTER_CONSTANT = 60/(2*Math.PI*(SHOOTER_VELOCITY_WHEEL_DIAMETER/2));// from liner velocity to rotational velocity
     public static final double SHOOTER_VELOCITY_CONSTANT = 1;
-    public static final double SHOOTER_TRIANGLE_SHOT_VELOCITY = 5.8;//m/s
+    public static final double SHOOTER_TRIANGLE_SHOT_VELOCITY = 12;//m/s
     public static final double SHOOTER_TRIANGLE_SHOT_ANGLE = 65;//deg
     public static final double SHOOTER_STORAGE_MOVING_TIME = 4;//sec
 

@@ -30,7 +30,7 @@ public class StorageSubsystem implements Subsystem {
     }
 
     public void setPower(double power){
-        storageMotorUp.set(ControlMode.PercentOutput, power);
+        storageMotorUp.set(ControlMode.PercentOutput, 1.25*power);
         storageMotorDown.set(ControlMode.PercentOutput, -power);
     }
 

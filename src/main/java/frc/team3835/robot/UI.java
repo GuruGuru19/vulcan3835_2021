@@ -5,10 +5,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj2.command.button.Button;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.team3835.robot.commands.AutoShootCommand;
-import frc.team3835.robot.commands.ShooterResetCommand;
-import frc.team3835.robot.commands.TranchRunCommand;
-import frc.team3835.robot.commands.TriangleShootCommand;
+import frc.team3835.robot.commands.*;
 import frc.team3835.robot.subsystems.DriveSubsystem;
 import frc.team3835.robot.subsystems.IntakeSubsystem;
 import frc.team3835.robot.subsystems.ShooterSubsystem;
@@ -52,10 +49,14 @@ public class UI {
 
 
     public UI(ShooterSubsystem shooterSubsystem, StorageSubsystem storageSubsystem, DriveSubsystem driveSubsystem, IntakeSubsystem intakeSubsystem){
-        xButton2.whenPressed(new ShooterResetCommand());
-        xButton2.whenPressed(new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
-        bButton2.whenReleased(new TriangleShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem));
-        yButton.whenPressed(new TranchRunCommand(intakeSubsystem, shooterSubsystem));
+
+        xButton2.whenPressed(new ShooterResetCommand().withTimeout(3).andThen(
+                new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem).andThen(
+                        new ShooterResetCommand().withTimeout(3))));
+        bButton2.whenReleased(new ShooterResetCommand().andThen(
+                new TriangleShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem)));
+        yButton2.whenPressed(new TranchRunCommand(intakeSubsystem, shooterSubsystem));
+        aButton2.whenPressed(new ShooterResetCommand().withTimeout(3));
 
         System.out.println("UI ok");
         instance = this;

@@ -8,8 +8,9 @@ import frc.team3835.robot.subsystems.StorageSubsystem;
 
 public class Auto1CommandGroup extends SequentialCommandGroup {
     public Auto1CommandGroup(ShooterSubsystem shooterSubsystem, StorageSubsystem storageSubsystem, DriveSubsystem driveSubsystem) {
-        // TODO: Add your sequential commands in the super() call, e.g.
-        //           super(new FooCommand(), new BarCommand());
-        super(new ShooterResetCommand(), new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem), new MoveBackCommand(driveSubsystem,3));
+        super(new ShooterResetCommand().withTimeout(3),
+                new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem).withTimeout(6),
+                    new MoveBackCommand(driveSubsystem).withTimeout(1),
+                        new ShooterResetCommand().withTimeout(3));
     }
 }

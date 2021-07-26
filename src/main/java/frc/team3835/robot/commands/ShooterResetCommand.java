@@ -20,6 +20,7 @@ public class ShooterResetCommand implements Command {
 
     @Override
     public void initialize() {
+        System.out.println("shooter reset");
         shooter.setInUse(true);
         shooter.setTargetAngle(90);
         shooter.setAngleMotor(-Constants.SHOOTER_ANGLE_VELOCITY);
@@ -33,16 +34,7 @@ public class ShooterResetCommand implements Command {
 
     @Override
     public boolean isFinished() {
-        if (shooter.getStandingSwitchIsPressed()|| UI.getXboxController().getXButton()){
-            shooter.setAngleMotor(0);
-            shooter.setVelocityTarget(0);
-            shooter.getGyro().reset();
-            shooter.getEncoder().reset();
-            shooter.setInUse(false);
-            LoggerAdapter.log("shooter reset done");
-            return true;
-        }
-        return false;
+        return (shooter.getStandingSwitchIsPressed() || UI.getXboxController().getBackButton());
     }
 
     @Override
@@ -53,5 +45,10 @@ public class ShooterResetCommand implements Command {
     @Override
     public void end(boolean interrupted) {
         shooter.setAngleMotor(0);
+        shooter.setVelocityTarget(0);
+        shooter.getGyro().reset();
+        shooter.getEncoder().reset();
+        shooter.setInUse(false);
+        LoggerAdapter.log("shooter reset done");
     }
 }

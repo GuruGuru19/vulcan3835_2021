@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.team3835.lib.logger.Logger;
 import frc.team3835.lib.logger.LoggerAdapter;
+import frc.team3835.robot.commands.Auto1CommandGroup;
 import frc.team3835.robot.commands.AutoShootCommand;
 import frc.team3835.robot.commands.ShooterResetCommand;
 import frc.team3835.robot.subsystems.*;
@@ -93,11 +94,7 @@ public class Robot extends TimedRobot
             LoggerAdapter.loggerInit(Constants.loggerPath);
         }
         LoggerAdapter.log("robot at autonomous time");
-        autonomousCommand = new ShooterResetCommand().andThen(
-                    new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem).withTimeout(8)).andThen(
-                        new InstantCommand(()->driveSubsystem.power(-0.4,-0.4)).andThen(
-                                new WaitCommand(3).andThen(
-                                        new InstantCommand(()->driveSubsystem.power(0,0)))));//TODO: set up
+        autonomousCommand = new Auto1CommandGroup(shooterSubsystem, storageSubsystem, driveSubsystem);
 
         // schedule the autonomous command (example)
         if (autonomousCommand != null)
@@ -126,7 +123,7 @@ public class Robot extends TimedRobot
             autonomousCommand.cancel();
         }
         else{
-            new ShooterResetCommand().schedule();
+            new ShooterResetCommand().withTimeout(3).schedule();
         }
     }
 
