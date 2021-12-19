@@ -13,7 +13,6 @@ import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 import frc.team3835.robot.Constants;
-import frc.team3835.robot.MathAssistant;
 import frc.team3835.robot.commands.ShooterMoveCommand;
 
 public class ShooterSubsystem implements Subsystem {

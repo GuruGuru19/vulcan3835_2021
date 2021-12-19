@@ -43,6 +43,8 @@ public class DriveSubsystem implements Subsystem {
         setDefaultCommand(new DriveCommand(false, this));
 
         System.out.println("DriveSub ok");
+
+
     }
 
     public void power(double leftValue, double rightValue){

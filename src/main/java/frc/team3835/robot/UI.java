@@ -53,8 +53,10 @@ public class UI {
         xButton2.whenPressed(new ShooterResetCommand().withTimeout(3).andThen(
                 new AutoShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem).andThen(
                         new ShooterResetCommand().withTimeout(3))));
+
         bButton2.whenReleased(new ShooterResetCommand().andThen(
                 new TriangleShootCommand(shooterSubsystem, storageSubsystem, driveSubsystem)));
+
         yButton2.whenPressed(new TranchRunCommand(intakeSubsystem, shooterSubsystem));
         aButton2.whenPressed(new ShooterResetCommand().withTimeout(3));
 
